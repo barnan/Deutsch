@@ -2,37 +2,42 @@
 
 namespace GermanDict.Words
 {
-    internal class Noun : Word, INoun
+    internal class Verb : Word, IVerb
     {
-        public Noun(Article article, string word, string pluralForm, List<string> phrases, List<string> hun_meanings)
-            :base(hun_meanings, phrases)
+        public Verb(string infinitive, string inflected, string praeteritum, string perfect, List<string> phrases, List<string> hun_meanings)
+            : base (hun_meanings, phrases)
         {
-            Article = article;
-            Word = word;
-            PluralForm = pluralForm;
+            Infinitive = infinitive;
+            Inflected = inflected;
+            Praeteritum = praeteritum;
+            Perfect = perfect;
         }
 
-        #region INoun
-
-        public Article Article
-        {
-            get;
-            private set;
-        }
-
-        public string Word
+        public string Infinitive
         {
             get;
             private set;
         }
 
-        public string PluralForm
+        public string Inflected
         {
             get;
             private set;
         }
 
-        public override WordType WordType => WordType.Noun;
+        public string Praeteritum
+        {
+            get;
+            private set;
+        }
+
+        public string Perfect
+        {
+            get;
+            private set;
+        }
+
+        public override WordType WordType => WordType.Verb;
 
         /// <summary>
         /// IFormattable
@@ -43,25 +48,24 @@ namespace GermanDict.Words
         public override string ToString(string? format = null, IFormatProvider? formatProvider = null)
         {
             if (string.IsNullOrEmpty(format))
-            { 
-                format = "L"; 
+            {
+                format = "L";
             }
 
             switch (format.ToUpperInvariant())
             {
                 case "S":
-                    return $"{Word}{Environment.NewLine}" +
+                    return $"{Infinitive}{Environment.NewLine}" +
                         $"{HUN_Meanings}{Environment.NewLine}";
                 case "L":
                 default:
-                    return $"{Article}{Environment.NewLine}" +
-                        $"{Word}{Environment.NewLine}" +
+                    return $"{Infinitive}{Environment.NewLine}" +
                         $"{string.Join(',', HUN_Meanings.ToArray())}{Environment.NewLine}" +
-                        $"{PluralForm}{Environment.NewLine}" +
+                        $"{Inflected}{Environment.NewLine}" +
+                        $"{Praeteritum}{Environment.NewLine}" +
+                        $"{Perfect}{Environment.NewLine}" +
                         $"{string.Join(',', Phrases.ToArray())}{Environment.NewLine}";
             }
         }
-
-        #endregion
     }
 }

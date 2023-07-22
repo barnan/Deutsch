@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Interfaces
+namespace GermanDict.Interfaces
 {
     public enum Article
     {
@@ -10,6 +10,13 @@ namespace Interfaces
         e,
         [Description("das")]
         s
+    }
+
+    public enum WordType
+    {
+        Noun,
+        Verb,
+        Adjective
     }
 
     public enum AdjectiveBoosting

@@ -18,7 +18,5 @@ namespace GermanDict.Interfaces
         bool Remove(T item);
 
         void RemoveRange(IEnumerable<T> items);
-
-        bool SetFolder(string path);
     }
 }

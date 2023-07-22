@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +24,20 @@ namespace GermanDict
         public MainWindow()
         {
             InitializeComponent();
+
+            this.Title = "GermanDict " + GetRunningVersion();
+        }
+
+        private Version GetRunningVersion()
+        {
+            try
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version;
+            }
+            catch (Exception)
+            {
+                return new Version(0, 0, 0, 0);
+            }
         }
     }
 }
