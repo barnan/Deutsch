@@ -4,12 +4,14 @@ namespace GermanDict.Interfaces
 {
     public enum Article
     {
+        [Description("-")]
+        None,
         [Description("der")]
         r,
         [Description("die")]
         e,
         [Description("das")]
-        s
+        s        
     }
 
     public enum WordType

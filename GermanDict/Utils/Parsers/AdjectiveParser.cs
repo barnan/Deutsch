@@ -1,7 +1,6 @@
 ﻿using GermanDict.Interfaces;
-using GermanDict.Words;
 
-namespace Words.Parsers
+namespace Utils
 {
     internal class NounParser : IWordParser
     {
@@ -15,11 +14,9 @@ namespace Words.Parsers
                 return "";
             }
 
-            string text = null;
-
             if (adjective is IUnusualAdjective unusual)
             {
-                text = $"{unusual.Basic}{_PROPERTY_SEPARATOR}" +
+                return $"{unusual.Basic}{_PROPERTY_SEPARATOR}" +
                 $"{unusual.AdjectiveBoostingUnusual}{_PROPERTY_SEPARATOR}" +
                 $"{unusual.Comparative}{_PROPERTY_SEPARATOR}" +
                 $"{unusual.Superlative}{_PROPERTY_SEPARATOR}" +
@@ -27,14 +24,12 @@ namespace Words.Parsers
                 $"{string.Join(_LIST_SEPARATOR, adjective.Phrases)}{_PROPERTY_SEPARATOR}";
             }
             else
-            {              
-                text = $"{adjective.Basic}{_PROPERTY_SEPARATOR}" +
+            {
+                return $"{adjective.Basic}{_PROPERTY_SEPARATOR}" +
                 $"{adjective.AdjectiveBoostingUnusual}{_PROPERTY_SEPARATOR}" +
                 $"{string.Join(_LIST_SEPARATOR, adjective.HUN_Meanings)}{_PROPERTY_SEPARATOR}" +
                 $"{string.Join(_LIST_SEPARATOR, adjective.Phrases)}{_PROPERTY_SEPARATOR}";
             }
-
-            return text;
         }
 
         public IWord Parse(string text)
@@ -42,21 +37,18 @@ namespace Words.Parsers
             string[] fragments = text.Split(_PROPERTY_SEPARATOR);
             bool AdjectiveBoostingUnusual = bool.Parse(fragments[1]);
 
-            Adjective adjective = null;
             if (AdjectiveBoostingUnusual)
             {
                 string[] meanings = fragments[4].Split(_LIST_SEPARATOR);
                 string[] phrases = fragments[5].Split(_LIST_SEPARATOR);
-                adjective = new UnusualAdjective(fragments[0], fragments[2], fragments[3], AdjectiveBoostingUnusual, phrases.ToList(), meanings.ToList());
+                return new UnusualAdjective(fragments[0], fragments[2], fragments[3], AdjectiveBoostingUnusual, phrases.ToList(), meanings.ToList());
             }
             else
             {
                 string[] meanings = fragments[2].Split(_LIST_SEPARATOR);
                 string[] phrases = fragments[3].Split(_LIST_SEPARATOR);
-                adjective = new Adjective(fragments[0], AdjectiveBoostingUnusual, phrases.ToList(), meanings.ToList());
+                return new Adjective(fragments[0], AdjectiveBoostingUnusual, phrases.ToList(), meanings.ToList());
             }
-
-            return adjective;
         }
     }
 }

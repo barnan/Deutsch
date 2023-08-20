@@ -1,4 +1,6 @@
 ﻿
+using System.Globalization;
+
 namespace GermanDict.Interfaces
 {
     public interface IWord : IFormattable

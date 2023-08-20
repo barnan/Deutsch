@@ -3,9 +3,9 @@ namespace GermanDict.Interfaces
 {
     public interface IRepository<T> 
     {
-        T Get(int index, IComparer<T> comparer = null);
+        T Get(int index);
 
-        T Get(string name);
+        List<T> Get(string text);
 
         List<T> GetAllElements();
 

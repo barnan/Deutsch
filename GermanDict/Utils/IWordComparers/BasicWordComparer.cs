@@ -1,6 +1,6 @@
 ﻿using GermanDict.Interfaces;
 
-namespace GermanDict.Words.Comparers
+namespace Utils
 {
     internal class BasicWordComparer : IComparer<IWord>
     {

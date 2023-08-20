@@ -18,43 +18,58 @@ namespace GermanDict.WordHDDTextRepository
         private string _nounFileFullPath; 
         private string _verbFileFullPath; 
         private string _adjectiveFileFullPath;
-        private Thread _maintenanceThread;
-        private CancellationTokenSource _cts;
+        //private Thread _maintenanceThread;
+        //private CancellationTokenSource _cts;
 
-        private List<INoun> _nounCache;
-        private List<IVerb> _verbCache;
-        private List<IAdjective> _adjCache;
+        //private Dictionary<int, INoun> _nounCache;
+        //private Dictionary<int, IVerb> _verbCache;
+        //private Dictionary<int, IAdjective> _adjCache;
+
+        private IWordParser _nounParser;
+        private IWordParser _verbParser;
+        private IWordParser _adjParser;
+
+        private object _lockObj;
+        //private object _maintenanceLockObject;
 
         public WordHDDRepository(string externalPath)
         {
+            _lockObj = new object();
+            //_maintenanceLockObject = new object();
+
             _folderFullPath = Path.Combine(externalPath, _HDD_FOLDER_PATH_SUPPLEMENT);
             _nounFileFullPath = Path.Combine(_folderFullPath, _HDD_NOUN_FILE_NAME);
             _verbFileFullPath = Path.Combine(_folderFullPath, _HDD_VERB_FILE_NAME);
             _adjectiveFileFullPath = Path.Combine(_folderFullPath, _HDD_ADJECTIVE_FILE_NAME);
 
-            _nounCache = new List<INoun>();
-            _verbCache = new List<IVerb>();
-            _adjCache = new List<IAdjective>();
+            _nounParser = new 
 
+            //_nounCache = new Dictionary<int, INoun>();
+            //_verbCache = new Dictionary<int, IVerb>();
+            //_adjCache = new Dictionary<int, IAdjective>();
+            
             if (!Directory.Exists(_folderFullPath))
             {
                 Directory.CreateDirectory(_folderFullPath);
             }
 
-            _cts = new CancellationTokenSource();
-            _maintenanceThread = new Thread(Maintenance)
-            {
-                IsBackground = true,
-                Name = $"{nameof(WordHDDRepository)}_Maintenance_Thread"
-            };
-            _maintenanceThread.Start(_cts.Token);
+            //_cts = new CancellationTokenSource();
+            //_maintenanceThread = new Thread(Maintenance)
+            //{
+            //    IsBackground = true,
+            //    Name = $"{nameof(WordHDDRepository)}_Maintenance_Thread"
+            //};
+            //_maintenanceThread.Start(_cts.Token);
         }
 
         #region IRepository<IWord>
 
         public bool Add(IWord item)
         {
-            throw new NotImplementedException();
+            lock(_lockObj)
+            {
+
+            }
         }
 
         public void AddRange(IEnumerable<IWord> items)
@@ -67,19 +82,32 @@ namespace GermanDict.WordHDDTextRepository
             throw new NotImplementedException();
         }
 
-        public IWord Get(int index, IComparer<IWord> comparer = null)
+        public IWord Get(int index)
         {
             throw new NotImplementedException();
         }
 
-        public IWord Get(string name)
+        public List<IWord> Get(string name)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(name))
+            {
+                //log
+                return null;
+            }
+
+            lock(_lockObj)
+            {
+                using(StreamReader sr = new StreamReader())
+                { }
+            }
         }
 
         public List<IWord> GetAllElements()
         {
-            throw new NotImplementedException();
+            lock (_lockObj)
+            {
+                
+            }
         }
 
         public bool Remove(IWord item)
@@ -94,32 +122,50 @@ namespace GermanDict.WordHDDTextRepository
 
         #endregion
 
-        #region Maintenance
+        //#region Maintenance
 
-        private void Maintenance(object obj)
+        //private void Maintenance(object obj)
+        //{
+        //    if (obj is not CancellationToken token)
+        //    {
+        //        // do something!!
+        //        return;
+        //    }
+
+        //    while(true)
+        //    {
+        //        if (token.IsCancellationRequested)
+        //        {
+        //            break;
+        //        }
+
+        //        DoMaintenanceInternal();
+
+        //        Thread.Sleep(_MAINTENANCE_CYCLE_TIME_MS);
+        //    }
+        //}
+
+        //private void DoMaintenanceInternal()
+        //{
+
+        //}
+
+        //#endregion
+
+
+        #region private
+
+        private List<IWord> GetAllNouns()
         {
-            if (obj is not CancellationToken token)
+            using (StreamReader sr = new StreamReader(_nounFileFullPath))
             {
-                // do something!!
-                return;
-            }
- 
-            while(true)
-            {
-                if (token.IsCancellationRequested)
+                while (sr.EndOfStream)
                 {
-                    break;
+                    string line = sr.ReadLine();
+
                 }
 
-                DoMaintenanceInternal();
-
-                Thread.Sleep(_MAINTENANCE_CYCLE_TIME_MS);
             }
-        }
-
-        private void DoMaintenanceInternal()
-        {
-
         }
 
         #endregion

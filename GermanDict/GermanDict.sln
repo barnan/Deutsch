@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordHDDTextRepository", "Wo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Words", "Words\Words.csproj", "{0DBCE578-87CD-4C6F-B492-3B1F06604E92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordDBRepository", "WordDBRepository\WordDBRepository.csproj", "{757FEE06-669F-4536-B1C2-22B9A2B1C0EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordDBRepository", "WordDBRepository\WordDBRepository.csproj", "{757FEE06-669F-4536-B1C2-22B9A2B1C0EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{53973B2B-8D69-4C31-B555-5604D6715C3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{757FEE06-669F-4536-B1C2-22B9A2B1C0EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{757FEE06-669F-4536-B1C2-22B9A2B1C0EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{757FEE06-669F-4536-B1C2-22B9A2B1C0EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53973B2B-8D69-4C31-B555-5604D6715C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53973B2B-8D69-4C31-B555-5604D6715C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53973B2B-8D69-4C31-B555-5604D6715C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53973B2B-8D69-4C31-B555-5604D6715C3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
