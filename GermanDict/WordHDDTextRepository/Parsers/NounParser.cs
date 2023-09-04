@@ -1,6 +1,7 @@
 ﻿using GermanDict.Interfaces;
+using GermanDict.Words;
 
-namespace GermanDict.Words.Parsers
+namespace GermanDict.WordHDDTextRepository.Parsers
 {
     internal class NounParser : IWordParser
     {
@@ -28,7 +29,7 @@ namespace GermanDict.Words.Parsers
 
             Article article = (Article)Enum.Parse(typeof(Article), fragments[0]);
 
-            Noun noun = new Noun(article, fragments[1], fragments[2], meanings.ToList(), phrases.ToList());
+            IWord noun = WordFactory.CreateNoun(article, fragments[1], fragments[2], meanings.ToList(), phrases.ToList());
 
             return noun;
         }

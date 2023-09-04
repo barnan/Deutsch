@@ -1,4 +1,5 @@
 ﻿using GermanDict.Interfaces;
+using GermanDict.WordHDDTextRepository.Parsers;
 
 namespace GermanDict.WordHDDTextRepository
 {
@@ -10,7 +11,7 @@ namespace GermanDict.WordHDDTextRepository
         private const string _HDD_VERB_FILE_NAME = "Verbs.dict";
         private const string _HDD_ADJECTIVE_FILE_NAME = "Adjectives.dict";
         private const string _HDD_NOUN_FILE_NAME = "Nouns.dict";
-        private const int _MAINTENANCE_CYCLE_TIME_MS = 10000;
+        //private const int _MAINTENANCE_CYCLE_TIME_MS = 10000;
 
         #endregion
         
@@ -18,12 +19,8 @@ namespace GermanDict.WordHDDTextRepository
         private string _nounFileFullPath; 
         private string _verbFileFullPath; 
         private string _adjectiveFileFullPath;
-        //private Thread _maintenanceThread;
-        //private CancellationTokenSource _cts;
-
-        //private Dictionary<int, INoun> _nounCache;
-        //private Dictionary<int, IVerb> _verbCache;
-        //private Dictionary<int, IAdjective> _adjCache;
+        private Thread _maintenanceThread;
+        private CancellationTokenSource _cts;
 
         private IWordParser _nounParser;
         private IWordParser _verbParser;
@@ -42,16 +39,14 @@ namespace GermanDict.WordHDDTextRepository
             _verbFileFullPath = Path.Combine(_folderFullPath, _HDD_VERB_FILE_NAME);
             _adjectiveFileFullPath = Path.Combine(_folderFullPath, _HDD_ADJECTIVE_FILE_NAME);
 
-            _nounParser = new 
-
-            //_nounCache = new Dictionary<int, INoun>();
-            //_verbCache = new Dictionary<int, IVerb>();
-            //_adjCache = new Dictionary<int, IAdjective>();
-            
             if (!Directory.Exists(_folderFullPath))
             {
                 Directory.CreateDirectory(_folderFullPath);
             }
+
+            _nounParser = new NounParser();
+            _verbParser = new VerbParser();
+            _adjParser = new AdjectiveParser();
 
             //_cts = new CancellationTokenSource();
             //_maintenanceThread = new Thread(Maintenance)
@@ -64,17 +59,26 @@ namespace GermanDict.WordHDDTextRepository
 
         #region IRepository<IWord>
 
-        public bool Add(IWord item)
+        public bool Add(IWord word)
         {
             lock(_lockObj)
             {
+                IWordParser parser = GetProperParser(word);
+                string wordText = parser.Convert(word);
 
+                using 
             }
         }
 
         public void AddRange(IEnumerable<IWord> items)
         {
-            throw new NotImplementedException();
+            lock (_lockObj)
+            {
+                foreach (IWord word in items)
+                {
+                    Add(word);
+                } 
+            }
         }
 
         public List<IWord> Find(Predicate<IWord> predicate)
@@ -82,10 +86,10 @@ namespace GermanDict.WordHDDTextRepository
             throw new NotImplementedException();
         }
 
-        public IWord Get(int index)
-        {
-            throw new NotImplementedException();
-        }
+        //public IWord Get(int index)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public List<IWord> Get(string name)
         {
@@ -165,6 +169,21 @@ namespace GermanDict.WordHDDTextRepository
 
                 }
 
+            }
+        }
+
+        private IWordParser GetProperParser(IWord word)
+        {
+            switch (word.WordType)
+            {
+                case WordType.Noun:
+                    return _nounParser;
+                case WordType.Verb:
+                    return _verbParser;
+                case WordType.Adjective:
+                    return _adjParser;
+                default:
+                    throw new ArgumentException($"The word contains an unhandled {nameof(WordType)} -> \"{word.WordType}\"");
             }
         }
 

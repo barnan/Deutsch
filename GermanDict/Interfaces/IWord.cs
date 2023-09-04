@@ -56,7 +56,6 @@ namespace GermanDict.Interfaces
     }
 
 
-
     public interface IAdjective : IWord
     {
         string Basic { get; }

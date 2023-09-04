@@ -1,8 +1,9 @@
 ﻿using GermanDict.Interfaces;
+using GermanDict.Words;
 
-namespace Utils
+namespace GermanDict.WordHDDTextRepository.Parsers
 {
-    internal class NounParser : IWordParser
+    internal class AdjectiveParser : IWordParser
     {
         private const char _PROPERTY_SEPARATOR = ';';
         private const char _LIST_SEPARATOR = ':';
@@ -41,13 +42,13 @@ namespace Utils
             {
                 string[] meanings = fragments[4].Split(_LIST_SEPARATOR);
                 string[] phrases = fragments[5].Split(_LIST_SEPARATOR);
-                return new UnusualAdjective(fragments[0], fragments[2], fragments[3], AdjectiveBoostingUnusual, phrases.ToList(), meanings.ToList());
+                return WordFactory.CreateUnusualAdjective(fragments[0], fragments[2], fragments[3], AdjectiveBoostingUnusual, phrases.ToList(), meanings.ToList());
             }
             else
             {
                 string[] meanings = fragments[2].Split(_LIST_SEPARATOR);
                 string[] phrases = fragments[3].Split(_LIST_SEPARATOR);
-                return new Adjective(fragments[0], AdjectiveBoostingUnusual, phrases.ToList(), meanings.ToList());
+                return WordFactory.CreateAdjective(fragments[0], AdjectiveBoostingUnusual, phrases.ToList(), meanings.ToList());
             }
         }
     }

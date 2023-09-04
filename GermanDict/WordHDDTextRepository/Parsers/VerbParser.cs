@@ -1,6 +1,7 @@
 ﻿using GermanDict.Interfaces;
+using GermanDict.Words;
 
-namespace GermanDict.Words.Parsers
+namespace GermanDict.WordHDDTextRepository.Parsers
 {
     internal class VerbParser : IWordParser
     {
@@ -28,9 +29,9 @@ namespace GermanDict.Words.Parsers
             string[] meanings = fragments[5].Split(_LIST_SEPARATOR);
             string[] phrases = fragments[6].Split(_LIST_SEPARATOR);
 
-            Verb noun = new Verb(fragments[1], fragments[2], fragments[3], fragments[4], meanings.ToList(), phrases.ToList());
+            IWord verb = WordFactory.CreateVerb(fragments[1], fragments[2], fragments[3], fragments[4], meanings.ToList(), phrases.ToList());
 
-            return noun;
+            return verb;
         }
 
     }

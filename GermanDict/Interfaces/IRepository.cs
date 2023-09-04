@@ -3,7 +3,7 @@ namespace GermanDict.Interfaces
 {
     public interface IRepository<T> 
     {
-        T Get(int index);
+        //T Get(int index);
 
         List<T> Get(string text);
 
