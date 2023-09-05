@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace GermanDict.Interfaces
 {
-    public interface IWord : IFormattable
+    public interface IWord : IFormattable, IEquatable<IWord>
     {
         List<string> Phrases { get; }
 

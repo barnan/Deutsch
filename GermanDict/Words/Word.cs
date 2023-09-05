@@ -24,6 +24,8 @@ namespace GermanDict.Words
 
         public abstract WordType WordType { get; }
 
+        public abstract bool Equals(IWord? other);
+
         public abstract string ToString(string? format, IFormatProvider? formatProvider);
     }
 }

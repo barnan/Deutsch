@@ -1,4 +1,6 @@
 ﻿using GermanDict.Interfaces;
+using System;
+using System.Text;
 
 namespace GermanDict.Words
 {
@@ -33,6 +35,8 @@ namespace GermanDict.Words
         }
 
         public override WordType WordType => WordType.Noun;
+        
+        #region IFormattable
 
         /// <summary>
         /// IFormattable
@@ -61,6 +65,55 @@ namespace GermanDict.Words
                         $"{string.Join(',', Phrases.ToArray())}{Environment.NewLine}";
             }
         }
+
+        #endregion
+
+        #region IEquatable
+
+        public override bool Equals(IWord? other)
+        {
+            if (other == null)
+                return false;
+
+            if (this.GetHashCode() == other.GetHashCode())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            Noun nounObj = obj as Noun;
+
+            if (nounObj == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(nounObj);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            string codeText = $"{Article.ToString()}{Word}{PluralForm}";        // {string.Join('', Phrases)}{string.Join('', HUN_Meanings)}
+            int code = 0;
+            foreach (char ch in codeText)
+            {
+                code += ch;
+            }
+            return code;
+        }
+
+        #endregion
 
         #endregion
     }

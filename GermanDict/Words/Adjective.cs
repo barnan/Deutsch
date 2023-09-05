@@ -37,6 +37,8 @@ namespace GermanDict.Words
 
         public override WordType WordType => WordType.Adjective;
 
+        #region IFormattable
+
         public override string ToString(string? format, IFormatProvider? formatProvider)
         {
             if (string.IsNullOrEmpty(format))
@@ -56,5 +58,54 @@ namespace GermanDict.Words
                         $"{string.Join(',', Phrases.ToArray())}{Environment.NewLine}";
             }
         }
+
+        #endregion
+
+        #region IEquatable
+
+        public override bool Equals(IWord? other)
+        {
+            if (other == null)
+                return false;
+
+            if (this.GetHashCode() == other.GetHashCode())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            Verb adjObj = obj as Verb;
+
+            if (adjObj == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(adjObj);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            string codeText = $"{Basic}{AdjectiveBoostingUnusual}";        // {string.Join('', Phrases)}{string.Join('', HUN_Meanings)}
+            int code = 0;
+            foreach (char ch in codeText)
+            {
+                code += ch;
+            }
+            return code;
+        }
+
+        #endregion
     }
 }

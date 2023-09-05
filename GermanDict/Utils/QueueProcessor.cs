@@ -63,7 +63,7 @@
         
         #region private
 
-        private void Processor(T obj)
+        private void Processor(object obj)
         {
 
 

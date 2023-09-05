@@ -5,18 +5,18 @@ namespace GermanDict.Interfaces
     {
         //T Get(int index);
 
-        List<T> Get(string text);
+        IEnumerable<T> Get(string text);
 
-        List<T> GetAllElements();
+        IEnumerable<T> GetAllElements();
 
-        List<T> Find(Predicate<T> predicate);
+        IEnumerable<T> Find(Predicate<T> predicate);
 
-        bool Add(T item);
+        void Add(T word);
 
-        void AddRange(IEnumerable<T> items);
+        void AddRange(IEnumerable<T> words);
 
-        bool Remove(T item);
+        void Remove(T word);
 
-        void RemoveRange(IEnumerable<T> items);
+        void RemoveRange(IEnumerable<T> words);
     }
 }

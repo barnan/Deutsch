@@ -1,4 +1,5 @@
 ﻿using GermanDict.Interfaces;
+using GermanDict.WordHDDTextRepository.FileHandlers;
 using GermanDict.WordHDDTextRepository.Parsers;
 
 namespace GermanDict.WordHDDTextRepository
@@ -14,7 +15,13 @@ namespace GermanDict.WordHDDTextRepository
         //private const int _MAINTENANCE_CYCLE_TIME_MS = 10000;
 
         #endregion
-        
+
+        #region private fields
+
+        private HashSet<INoun> _nounSet;
+        private HashSet<IVerb> _verbSet;
+        private HashSet<IAdjective> _adjectiveSet;
+
         private string _folderFullPath; 
         private string _nounFileFullPath; 
         private string _verbFileFullPath; 
@@ -25,9 +32,12 @@ namespace GermanDict.WordHDDTextRepository
         private IWordParser _nounParser;
         private IWordParser _verbParser;
         private IWordParser _adjParser;
+        private IRepositoryTextFileHandler _fileHandler;
 
         private object _lockObj;
         //private object _maintenanceLockObject;
+
+        #endregion
 
         public WordHDDRepository(string externalPath)
         {
@@ -48,6 +58,8 @@ namespace GermanDict.WordHDDTextRepository
             _verbParser = new VerbParser();
             _adjParser = new AdjectiveParser();
 
+            _fileHandler = new RepositoryTextFileHandler(_nounFileFullPath, _verbFileFullPath, _adjectiveFileFullPath);
+
             //_cts = new CancellationTokenSource();
             //_maintenanceThread = new Thread(Maintenance)
             //{
@@ -59,14 +71,13 @@ namespace GermanDict.WordHDDTextRepository
 
         #region IRepository<IWord>
 
-        public bool Add(IWord word)
+        public void Add(IWord word)
         {
             lock(_lockObj)
             {
                 IWordParser parser = GetProperParser(word);
                 string wordText = parser.Convert(word);
-
-                using 
+                _fileHandler.SaveLine(wordText, word.WordType);
             }
         }
 
@@ -81,9 +92,9 @@ namespace GermanDict.WordHDDTextRepository
             }
         }
 
-        public List<IWord> Find(Predicate<IWord> predicate)
+        public IEnumerable<IWord> Find(Predicate<IWord> predicate)
         {
-            throw new NotImplementedException();
+            throw new NotFiniteNumberException();
         }
 
         //public IWord Get(int index)
@@ -91,7 +102,7 @@ namespace GermanDict.WordHDDTextRepository
         //    throw new NotImplementedException();
         //}
 
-        public List<IWord> Get(string name)
+        public IEnumerable<IWord> Get(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -106,7 +117,7 @@ namespace GermanDict.WordHDDTextRepository
             }
         }
 
-        public List<IWord> GetAllElements()
+        public IEnumerable<IWord> GetAllElements()
         {
             lock (_lockObj)
             {
@@ -114,9 +125,18 @@ namespace GermanDict.WordHDDTextRepository
             }
         }
 
-        public bool Remove(IWord item)
+        public void Remove(IWord word)
         {
-            throw new NotImplementedException();
+            var wordTexts = _fileHandler.GetLines(word.WordType);
+            IWordParser parser = GetProperParser(word);
+            List<IWord> words = new List<IWord>();
+
+            foreach (var itemText in wordTexts)
+            {
+                words.Add(parser.Parse(itemText));
+            }
+            words.
+            
         }
 
         public void RemoveRange(IEnumerable<IWord> items)
@@ -158,19 +178,6 @@ namespace GermanDict.WordHDDTextRepository
 
 
         #region private
-
-        private List<IWord> GetAllNouns()
-        {
-            using (StreamReader sr = new StreamReader(_nounFileFullPath))
-            {
-                while (sr.EndOfStream)
-                {
-                    string line = sr.ReadLine();
-
-                }
-
-            }
-        }
 
         private IWordParser GetProperParser(IWord word)
         {

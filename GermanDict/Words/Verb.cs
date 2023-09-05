@@ -39,6 +39,8 @@ namespace GermanDict.Words
 
         public override WordType WordType => WordType.Verb;
 
+        #region IFormattable
+
         /// <summary>
         /// IFormattable
         /// </summary>
@@ -67,5 +69,54 @@ namespace GermanDict.Words
                         $"{string.Join(',', Phrases.ToArray())}{Environment.NewLine}";
             }
         }
+
+        #endregion
+
+        #region IEquatable
+
+        public override bool Equals(IWord? other)
+        {
+            if (other == null)
+                return false;
+
+            if (this.GetHashCode() == other.GetHashCode())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            Verb verbObj = obj as Verb;
+
+            if (verbObj == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(verbObj);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            string codeText = $"{Infinitive}{Inflected}{Praeteritum}{Perfect}";        // {string.Join('', Phrases)}{string.Join('', HUN_Meanings)}
+            int code = 0;
+            foreach (char ch in codeText)
+            {
+                code += ch;
+            }
+            return code;
+        }
+
+        #endregion
     }
 }
