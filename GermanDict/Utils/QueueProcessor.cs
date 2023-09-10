@@ -4,14 +4,14 @@
     {
         private int _capacity;
         private Queue<T> _internalQueue;
-        private Action<T> _actionToDo;
+        private Action<object> _actionToDo;
         private object _lockObject;
         private Thread _processorThread;
         private CancellationTokenSource _tokenSource;
         
         #region public
 
-        public QueueProcessor(Action<T> actionToDo, int maxQueueCapacity)
+        public QueueProcessor(Action<object> actionToDo, int maxQueueCapacity)
         {
             if (maxQueueCapacity < 1)
             {

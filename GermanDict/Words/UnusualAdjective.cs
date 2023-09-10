@@ -4,12 +4,14 @@ namespace GermanDict.Words
 {
     internal class UnusualAdjective : Adjective, IUnusualAdjective
     {
-        public UnusualAdjective(string basic, string comparative, string superlative, bool adjectiveBoostingUnusual, List<string> phrases, List<string> hun_meanings) 
+        public UnusualAdjective(string basic, string comparative, string superlative, bool adjectiveBoostingUnusual, IEnumerable<string> phrases, IEnumerable<string> hun_meanings) 
             : base(basic, adjectiveBoostingUnusual, phrases, hun_meanings)
         {
             Comparative = comparative;
             Superlative = superlative;
         }
+
+        #region IUnusualAdjective
 
         public string Comparative
         {
@@ -22,6 +24,26 @@ namespace GermanDict.Words
             get;
             private set;
         }
+
+        #endregion
+
+        #region overrides of IWord
+
+        public override bool IsMatchingWithText(string text)
+        {
+            if (text.Length < _MINIMUM_MATCHING_WORD_LENGTH)
+            {
+                return false;
+            }
+
+            return Basic.Contains(text) ||
+                   Comparative.Contains(text) ||
+                   Superlative.Contains(text) ||
+                   Phrases.Contains(text) ||
+                   HUN_Meanings.Contains(text);
+        }
+
+        #endregion
 
         #region IFormattable
 

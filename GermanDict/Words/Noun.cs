@@ -1,12 +1,11 @@
-﻿using GermanDict.Interfaces;
-using System;
-using System.Text;
+﻿using Factories;
+using GermanDict.Interfaces;
 
 namespace GermanDict.Words
 {
     internal class Noun : Word, INoun
     {
-        public Noun(Article article, string word, string pluralForm, List<string> phrases, List<string> hun_meanings)
+        public Noun(Article article, string word, string pluralForm, IEnumerable<string> phrases, IEnumerable<string> hun_meanings)
             :base(hun_meanings, phrases)
         {
             Article = article;
@@ -35,7 +34,27 @@ namespace GermanDict.Words
         }
 
         public override WordType WordType => WordType.Noun;
-        
+
+        #endregion
+
+        #region overrides of IWord
+
+        public override bool IsMatchingWithText(string text)
+        {
+            if (text.Length < _MINIMUM_MATCHING_WORD_LENGTH)
+            {
+                return false;
+            }
+
+            return Article.ToString() == text ||
+                   Word.Contains(text) ||
+                   PluralForm.Contains(text) ||
+                   Phrases.Contains(text) ||
+                   HUN_Meanings.Contains(text);
+        }
+
+        #endregion
+
         #region IFormattable
 
         /// <summary>
@@ -90,7 +109,7 @@ namespace GermanDict.Words
             if (obj == null)
                 return false;
 
-            Noun nounObj = obj as Noun;
+            INoun nounObj = obj as INoun;
 
             if (nounObj == null)
             {
@@ -115,6 +134,10 @@ namespace GermanDict.Words
 
         #endregion
 
+        #region parser
+
+        
         #endregion
+
     }
 }

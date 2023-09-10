@@ -1,27 +1,67 @@
 ﻿using GermanDict.Interfaces;
+using GermanDict.Words;
+using GermanDict.Words.Parsers;
+using Words.Parsers;
 
-namespace GermanDict.Words
+namespace Factories
 {
     public static class WordFactory
     {
-        public static IWord CreateNoun(Article article, string word, string pluralForm, List<string> phrases, List<string> hun_meanings)
+        public static IWord CreateWord(WordType wordType, IFactoryParameters factoryParameter) 
         {
-            return new Noun(article, word, pluralForm, phrases, hun_meanings);
+            switch (wordType)
+            {
+                case WordType.Noun:
+                    if (!(factoryParameter is INounFactoryParameters nounParameters))
+                    {
+                        throw new ArgumentException($"{wordType} can not be created with the recived {nameof(IFactoryParameters)}");
+                    }
+                    return new Noun(nounParameters.Article, nounParameters.Word, nounParameters.PluralForm, nounParameters.Phrases, nounParameters.HUN_Meanings);
+
+                case WordType.Verb:
+                    if (!(factoryParameter is IVerbFactoryParameters verbParameters))
+                    {
+                        throw new ArgumentException($"{wordType} can not be created with the recived {nameof(IFactoryParameters)}");
+                    }
+                    return new Verb(verbParameters.Infinitive, verbParameters.Inflected, verbParameters.Praeteritum, verbParameters.Perfect, verbParameters.Phrases, verbParameters.HUN_Meanings );
+
+                case WordType.Adjective:
+                    if (!(factoryParameter is IAdjectiveFactoryParameters adjParameters))
+                    {
+                        throw new ArgumentException($"{wordType} can not be created with the recived {nameof(IFactoryParameters)}");
+                    }
+                    
+                    if (adjParameters.AdjectiveBoostingUnusual && factoryParameter is IUnusualAdjectiveFactoryParameters unusualAdjParameters)
+                    {
+                        new UnusualAdjective(unusualAdjParameters.Basic, unusualAdjParameters.Comparative, unusualAdjParameters.Superlative, unusualAdjParameters.AdjectiveBoostingUnusual, unusualAdjParameters.Phrases, unusualAdjParameters.HUN_Meanings);
+                    }
+                    
+                    return new Adjective(adjParameters.Basic, adjParameters.AdjectiveBoostingUnusual, adjParameters.Phrases, adjParameters.HUN_Meanings);
+                
+                default:
+                    throw new ArgumentException($"{nameof(WordType)} ({wordType}) can not be interpreted");
+            }
         }
 
-        public static IWord CreateVerb(string infinitive, string inflected, string praeteritum, string perfect, List<string> phrases, List<string> hun_meanings)
-        {
-            return new Verb(infinitive, inflected, praeteritum, perfect, phrases, hun_meanings);
-        }
 
-        public static IWord CreateAdjective(string basic, bool adjectiveBoostingUnusual, List<string> phrases, List<string> hun_meanings)
-        {
-            return new Adjective(basic, adjectiveBoostingUnusual, phrases, hun_meanings);
-        }
+        internal static IParser<IWord> _nounParser = new NounParser();
+        internal static IParser<IWord> _verbParser = new VerbParser();
+        internal static IParser<IWord> _adjectiveParser = new AdjectiveParser();
 
-        public static IWord CreateUnusualAdjective(string basic, string comparative, string superlative, bool adjectiveBoostingUnusual, List<string> phrases, List<string> hun_meanings)
+
+        public static IParser<IWord> GetParser(WordType wordType)
         {
-            return new UnusualAdjective(basic, comparative, superlative, adjectiveBoostingUnusual, phrases, hun_meanings);
+            switch (wordType)
+            {
+                case WordType.Noun:
+                    return _nounParser;
+                case WordType.Verb:
+                    return _verbParser;
+                case WordType.Adjective:
+                    return _adjectiveParser;
+                default:
+                    throw new Exception("No more parsers are available");
+            }
         }
 
     }

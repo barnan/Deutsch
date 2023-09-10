@@ -1,15 +1,13 @@
 ﻿
-using System.Globalization;
-
 namespace GermanDict.Interfaces
 {
-    public interface IWord : IFormattable, IEquatable<IWord>
+    public interface IWord : IFormattable, IEquatable<IWord>, IRepositoryElement
     {
-        List<string> Phrases { get; }
+        IEnumerable<string> Phrases { get; }
 
-        List<string> HUN_Meanings { get; }
+        IEnumerable<string> HUN_Meanings { get; }
 
-        WordType WordType { get; }
+        WordType WordType { get; }        
     }
     
     
@@ -34,7 +32,6 @@ namespace GermanDict.Interfaces
 
         new string Perfect { get; set; }
     }
-
 
 
     public interface INoun : IWord

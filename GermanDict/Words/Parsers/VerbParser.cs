@@ -1,10 +1,11 @@
 ﻿using GermanDict.Interfaces;
 using GermanDict.Words;
 
-namespace GermanDict.WordHDDTextRepository.Parsers
+namespace Words.Parsers
 {
-    internal class VerbParser : IWordParser
+    internal class VerbParser : IParser<IWord>
     {
+
         private const char _PROPERTY_SEPARATOR = ';';
         private const char _LIST_SEPARATOR = ':';
 
@@ -29,7 +30,7 @@ namespace GermanDict.WordHDDTextRepository.Parsers
             string[] meanings = fragments[5].Split(_LIST_SEPARATOR);
             string[] phrases = fragments[6].Split(_LIST_SEPARATOR);
 
-            IWord verb = WordFactory.CreateVerb(fragments[1], fragments[2], fragments[3], fragments[4], meanings.ToList(), phrases.ToList());
+            IWord verb = new Verb(fragments[1], fragments[2], fragments[3], fragments[4], meanings.ToList(), phrases.ToList());
 
             return verb;
         }

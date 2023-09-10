@@ -4,12 +4,14 @@ namespace GermanDict.Words
 {
     internal class Adjective : Word, IAdjective
     {
-        public Adjective(string basic, bool adjectiveBoostingUnusual, List<string> phrases, List<string> hun_meanings)
+        public Adjective(string basic, bool adjectiveBoostingUnusual, IEnumerable<string> phrases, IEnumerable<string> hun_meanings)
             : base(phrases, hun_meanings)
         {
             Basic = basic;
             AdjectiveBoostingUnusual = adjectiveBoostingUnusual;
         }
+
+        #region IAdjective
 
         public string Basic
         {
@@ -36,6 +38,24 @@ namespace GermanDict.Words
         }
 
         public override WordType WordType => WordType.Adjective;
+
+        #endregion
+
+        #region overrides of IWord
+
+        public override bool IsMatchingWithText(string text)
+        {
+            if (text.Length < _MINIMUM_MATCHING_WORD_LENGTH)
+            { 
+                return false;
+            }
+
+            return Basic.Contains(text) ||
+                   Phrases.Contains(text) ||
+                   HUN_Meanings.Contains(text);
+        }
+
+        #endregion
 
         #region IFormattable
 
@@ -83,7 +103,7 @@ namespace GermanDict.Words
             if (obj == null)
                 return false;
 
-            Verb adjObj = obj as Verb;
+            IAdjective adjObj = obj as IAdjective;
 
             if (adjObj == null)
             {

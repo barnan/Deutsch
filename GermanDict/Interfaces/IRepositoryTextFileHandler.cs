@@ -3,8 +3,8 @@ namespace GermanDict.Interfaces
 {
     public interface IRepositoryTextFileHandler
     {
-        void SaveLine(string text, WordType wordType);
+        void SaveContent(IEnumerable<string> content);
 
-        IEnumerable<string> GetLines(WordType wordType);
+        IEnumerable<string> GetContent();
     }
 }

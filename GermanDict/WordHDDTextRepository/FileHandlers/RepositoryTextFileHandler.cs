@@ -1,62 +1,30 @@
-﻿
-using GermanDict.Interfaces;
+﻿using GermanDict.Interfaces;
 using System.Text;
 
 namespace GermanDict.WordHDDTextRepository.FileHandlers
 {
     internal class RepositoryTextFileHandler : IRepositoryTextFileHandler
     {
-        private string _nounFilePath;
-        private string _verbFilePath;
-        private string _adjFilePath;
-
-        public RepositoryTextFileHandler(string nounFilePath, string verbFilePath, string adjFilePath)
+        private string _filePath;
+        public RepositoryTextFileHandler(string filePath)
         {
-            _nounFilePath = nounFilePath;
-            _verbFilePath = verbFilePath;
-            _adjFilePath = adjFilePath;
+            _filePath = filePath;
         }
 
         #region IRepositoryTextFileHandler
 
-        public IEnumerable<string> GetLines(WordType wordType)
+        public IEnumerable<string> GetContent()
         {
-            string filePath = GetFilePathFerWordType(wordType);
-            string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
+            string[] lines = File.ReadAllLines(_filePath, Encoding.UTF8);
             return lines;
         }
 
-        public void SaveLine(string text, WordType wordType)
+        public void SaveContent(IEnumerable<string> content)
         {
-            string filePath = GetFilePathFerWordType(wordType);
-            File.AppendAllLines(filePath, new[] { text });
+            File.Delete(_filePath);
+            File.AppendAllLines(_filePath, content);
         }
 
         #endregion
-
-        #region private
-
-        private string GetFilePathFerWordType (WordType wordType)
-        {
-            string filePath;
-            switch (wordType)
-            {
-                case WordType.Noun:
-                    filePath = _nounFilePath;
-                    break;
-                case WordType.Verb:
-                    filePath = _verbFilePath;
-                    break;
-                case WordType.Adjective:
-                    filePath = _adjFilePath;
-                    break;
-                default:
-                    throw new ArgumentException($"The word contains an unhandled {nameof(WordType)} -> \"{wordType}\"");
-            }
-            return filePath;
-        }
-
-        #endregion
-
     }
 }

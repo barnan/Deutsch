@@ -1,10 +1,11 @@
-﻿using GermanDict.Interfaces;
+﻿using Factories;
+using GermanDict.Interfaces;
 
 namespace GermanDict.Words
 {
     internal class Verb : Word, IVerb
     {
-        public Verb(string infinitive, string inflected, string praeteritum, string perfect, List<string> phrases, List<string> hun_meanings)
+        public Verb(string infinitive, string inflected, string praeteritum, string perfect, IEnumerable<string> phrases, IEnumerable<string> hun_meanings)
             : base (hun_meanings, phrases)
         {
             Infinitive = infinitive;
@@ -12,6 +13,8 @@ namespace GermanDict.Words
             Praeteritum = praeteritum;
             Perfect = perfect;
         }
+
+        #region IVerb
 
         public string Infinitive
         {
@@ -38,6 +41,27 @@ namespace GermanDict.Words
         }
 
         public override WordType WordType => WordType.Verb;
+
+        #endregion
+
+        #region overrides of IWord
+
+        public override bool IsMatchingWithText(string text)
+        {
+            if (text.Length < _MINIMUM_MATCHING_WORD_LENGTH)
+            {
+                return false;
+            }
+
+            return Infinitive.Contains(text) ||
+                   Inflected.Contains(text) ||
+                   Praeteritum.Contains(text) ||
+                   Perfect.Contains(text) ||
+                   Phrases.Contains(text) ||
+                   HUN_Meanings.Contains(text);
+        }
+
+        #endregion
 
         #region IFormattable
 
@@ -94,7 +118,7 @@ namespace GermanDict.Words
             if (obj == null)
                 return false;
 
-            Verb verbObj = obj as Verb;
+            IVerb verbObj = obj as IVerb;
 
             if (verbObj == null)
             {
@@ -116,6 +140,12 @@ namespace GermanDict.Words
             }
             return code;
         }
+
+        #endregion
+
+        #region parser
+
+        
 
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GermanDict.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SysVersion = System.Version;
 
 namespace GermanDict
 {
@@ -24,11 +26,16 @@ namespace GermanDict
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
 
             this.Title = "GermanDict " + GetRunningVersion();
+
+            UserControl[] userControls = new UserControl[] { new SearchWordUserControl_WPF(), new AddWordUserControl_WPF() };
+            CreateTabControlItems(tabControl1, userControls);
+
         }
 
-        private Version GetRunningVersion()
+        private SysVersion GetRunningVersion()
         {
             try
             {
@@ -36,7 +43,19 @@ namespace GermanDict
             }
             catch (Exception)
             {
-                return new Version(0, 0, 0, 0);
+                return new SysVersion(0, 0, 0, 0);
+            }
+        }
+
+        private void CreateTabControlItems(TabControl tabControl, UserControl[] userControls)
+        {
+            foreach (UserControl uc in userControls)
+            {
+                TabItem tabItem = new TabItem();
+                tabItem.Header = uc.Name;
+                tabItem.Content = uc;
+
+                tabControl.Items.Add(tabItem);
             }
         }
     }

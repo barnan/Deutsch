@@ -4,19 +4,23 @@ namespace GermanDict.Words
 {
     internal abstract class Word : IWord
     {
-        public Word(List<string> phrases, List<string> hun_meanings)
+        protected int _MINIMUM_MATCHING_WORD_LENGTH = 3;
+
+        public Word(IEnumerable<string> phrases, IEnumerable<string> hun_meanings)
         {
             HUN_Meanings = hun_meanings;
             Phrases = phrases;
         }
 
-        public List<string> Phrases
+        #region IWord
+
+        public IEnumerable<string> Phrases
         {
             get;
             private set;
         }
 
-        public List<string> HUN_Meanings
+        public IEnumerable<string> HUN_Meanings
         {
             get;
             private set;
@@ -26,6 +30,15 @@ namespace GermanDict.Words
 
         public abstract bool Equals(IWord? other);
 
+        public abstract bool IsMatchingWithText(string text);
+
+        #endregion
+
+        #region IFormattable
+
         public abstract string ToString(string? format, IFormatProvider? formatProvider);
+
+        #endregion
+        
     }
 }
