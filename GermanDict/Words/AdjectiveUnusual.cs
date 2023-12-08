@@ -2,30 +2,28 @@
 
 namespace GermanDict.Words
 {
-    internal class Adjective : Word, IAdjective
+    internal class AdjectiveUnusual : Adjective, IAdjectiveUnusual
     {
-        public Adjective(Language language, List<IWordAttribute> attributes, string basic, bool adjectiveBoostingUnusual)
-            : base(language, attributes)
+        public AdjectiveUnusual(Language language, List<IWordAttribute> attributes, string basic, string comparative, string superlative, bool adjectiveBoostingUnusual) 
+            : base(language, attributes, basic, adjectiveBoostingUnusual)
         {
-            Basic = basic;
-            AdjectiveBoostingUnusual = adjectiveBoostingUnusual;
+            Comparative = comparative;
+            Superlative = superlative;
         }
 
-        #region IAdjective
+        #region IUnusualAdjective
 
-        public string Basic
-        {
-            get;
-            private set;
-        }
-
-        public bool AdjectiveBoostingUnusual
+        public string Comparative
         {
             get;
             private set;
         }
 
-        public override WordType WordType => WordType.Adjective;
+        public string Superlative
+        {
+            get;
+            private set;
+        }
 
         #endregion
 
@@ -34,11 +32,13 @@ namespace GermanDict.Words
         public override bool IsMatchingWithText(string text)
         {
             if (text.Length < _MINIMUM_MATCHING_WORD_LENGTH)
-            { 
+            {
                 return false;
             }
 
-            return Basic.Contains(text);
+            return Basic.Contains(text) ||
+                   Comparative.Contains(text) ||
+                   Superlative.Contains(text);
         }
 
         #endregion
@@ -62,7 +62,9 @@ namespace GermanDict.Words
 
                     return $"{Language}{Environment.NewLine}" +
                         attrib +
-                        $"{Basic}{Environment.NewLine}";
+                        $"{Basic}{Environment.NewLine}" +
+                        $"{Comparative}{Environment.NewLine}" +
+                        $"{Superlative}{Environment.NewLine}";
             }
         }
 
@@ -72,16 +74,17 @@ namespace GermanDict.Words
 
         public override bool Equals(IDictionaryItem? other)
         {
-            if (!(other is IAdjective adj))
+            if (!(other is IAdjectiveUnusual adju))
             {
                 return false;
             }
 
-            var distinct = WordAttributes.Except(adj.WordAttributes, new WordAttributesComparer());
+            var distinct = WordAttributes.Except(adju.WordAttributes, new WordAttributesComparer());
 
-            if ((adj as IWord).Equals(other) &&
+            if ((adju as IAdjective).Equals(other) &&
                 distinct.Count() == 0 &&
-                Basic == adj.Basic)
+                Comparative == adju.Comparative &&
+                Superlative == adju.Superlative)
             {
                 return true;
             }
@@ -93,7 +96,7 @@ namespace GermanDict.Words
 
         //public override int GetHashCode()
         //{
-        //    string codeText = $"{Basic}{AdjectiveBoostingUnusual}";        // {string.Join('', Phrases)}{string.Join('', HUN_Meanings)}
+        //    string codeText = $"{Basic}{Comparative}{Superlative}";        // {string.Join('', Phrases)}{string.Join('', HUN_Meanings)}
         //    int code = 0;
         //    foreach (char ch in codeText)
         //    {
@@ -103,5 +106,6 @@ namespace GermanDict.Words
         //}
 
         #endregion
+
     }
 }

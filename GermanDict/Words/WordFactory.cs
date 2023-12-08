@@ -33,7 +33,7 @@ namespace Factories
                     
                     if (adjParameters.AdjectiveBoostingUnusual && factoryParameter is IUnusualAdjectiveFactoryParameters unusualAdjParameters)
                     {
-                        new UnusualAdjective(unusualAdjParameters.Basic, unusualAdjParameters.Comparative, unusualAdjParameters.Superlative, unusualAdjParameters.AdjectiveBoostingUnusual, unusualAdjParameters.Phrases, unusualAdjParameters.HUN_Meanings);
+                        new AdjectiveUnusual(unusualAdjParameters.Basic, unusualAdjParameters.Comparative, unusualAdjParameters.Superlative, unusualAdjParameters.AdjectiveBoostingUnusual, unusualAdjParameters.Phrases, unusualAdjParameters.HUN_Meanings);
                     }
                     
                     return new Adjective(adjParameters.Basic, adjParameters.AdjectiveBoostingUnusual, adjParameters.Phrases, adjParameters.HUN_Meanings);

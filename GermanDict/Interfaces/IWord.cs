@@ -8,18 +8,9 @@ namespace GermanDict.Interfaces
     }
 
 
-
-    public interface IDictionaryItemPair
-    {
-        IDictionaryItem Item1 { get; }
-        IDictionaryItem Item2 { get; }
-    }
-
-
     public interface IWord : IDictionaryItem
     {
         WordType WordType { get; }
-
         List<IWordAttribute> WordAttributes { get; }
     }
 
@@ -37,12 +28,9 @@ namespace GermanDict.Interfaces
     }
 
 
-
-
-    public interface IArticle : IWord
+    public interface IArticle : IDictionaryItem
     {
         string Name { get; }
-        int Id { get; }
     }
 
 
@@ -107,7 +95,7 @@ namespace GermanDict.Interfaces
 
 
 
-    public interface IUnusualAdjective : IAdjective
+    public interface IAdjectiveUnusual : IAdjective
     {
         string Comparative { get; }
 
@@ -115,7 +103,7 @@ namespace GermanDict.Interfaces
     }
 
 
-    public interface IUnusualAdjectiveHandler : IUnusualAdjective
+    public interface IAdjectiveUnusualHandler : IAdjectiveUnusual
     {
         new string Comparative { get; set; }
 

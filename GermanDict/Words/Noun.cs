@@ -1,12 +1,11 @@
-﻿using Factories;
-using GermanDict.Interfaces;
+﻿using GermanDict.Interfaces;
 
 namespace GermanDict.Words
 {
     internal class Noun : Word, INoun
     {
-        public Noun(Article article, string word, string pluralForm, IEnumerable<string> phrases, IEnumerable<string> hun_meanings)
-            :base(hun_meanings, phrases)
+        public Noun(Language language, List<IWordAttribute> attributes, IArticle article, string word, string pluralForm)
+            : base(language, attributes)
         {
             Article = article;
             Word = word;
@@ -15,7 +14,7 @@ namespace GermanDict.Words
 
         #region INoun
 
-        public Article Article
+        public IArticle Article
         {
             get;
             private set;
@@ -48,9 +47,7 @@ namespace GermanDict.Words
 
             return Article.ToString() == text ||
                    Word.Contains(text) ||
-                   PluralForm.Contains(text) ||
-                   Phrases.Contains(text) ||
-                   HUN_Meanings.Contains(text);
+                   PluralForm.Contains(text);
         }
 
         #endregion
@@ -66,22 +63,23 @@ namespace GermanDict.Words
         public override string ToString(string? format = null, IFormatProvider? formatProvider = null)
         {
             if (string.IsNullOrEmpty(format))
-            { 
-                format = "L"; 
+            {
+                format = "L";
             }
 
             switch (format.ToUpperInvariant())
             {
                 case "S":
-                    return $"{Word}{Environment.NewLine}" +
-                        $"{HUN_Meanings}{Environment.NewLine}";
+                    return $"{Word}{Environment.NewLine}";
                 case "L":
                 default:
-                    return $"{Article}{Environment.NewLine}" +
+                    string attrib = WordAttributes.Count > 0 ? $"[{string.Join(',', WordAttributes)}]{Environment.NewLine}" : "";
+
+                    return $"{Language}{Environment.NewLine}" +
+                        attrib +
+                        $"{Article}{Environment.NewLine}" +
                         $"{Word}{Environment.NewLine}" +
-                        $"{string.Join(',', HUN_Meanings.ToArray())}{Environment.NewLine}" +
-                        $"{PluralForm}{Environment.NewLine}" +
-                        $"{string.Join(',', Phrases.ToArray())}{Environment.NewLine}";
+                        $"{PluralForm}{Environment.NewLine}";
             }
         }
 
@@ -89,12 +87,20 @@ namespace GermanDict.Words
 
         #region IEquatable
 
-        public override bool Equals(IWord? other)
+        public override bool Equals(IDictionaryItem? other)
         {
-            if (other == null)
+            if (!(other is INoun noun))
+            {
                 return false;
+            }
 
-            if (this.GetHashCode() == other.GetHashCode())
+            var distinct = WordAttributes.Except(noun.WordAttributes, new WordAttributesComparer());
+
+            if ((noun as IWord).Equals(other) &&
+                distinct.Count() == 0 &&
+                Article == noun.Article &&
+                Word == noun.Word &&
+                PluralForm == noun.PluralForm)
             {
                 return true;
             }
@@ -104,39 +110,17 @@ namespace GermanDict.Words
             }
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
+        //public override int GetHashCode()
+        //{
+        //    string codeText = $"{Article.ToString()}{Word}{PluralForm}";        // {string.Join('', Phrases)}{string.Join('', HUN_Meanings)}
+        //    int code = 0;
+        //    foreach (char ch in codeText)
+        //    {
+        //        code += ch;
+        //    }
+        //    return code;
+        //}
 
-            INoun nounObj = obj as INoun;
-
-            if (nounObj == null)
-            {
-                return false;
-            }
-            else
-            {
-                return Equals(nounObj);
-            }
-        }
-
-        public override int GetHashCode()
-        {
-            string codeText = $"{Article.ToString()}{Word}{PluralForm}";        // {string.Join('', Phrases)}{string.Join('', HUN_Meanings)}
-            int code = 0;
-            foreach (char ch in codeText)
-            {
-                code += ch;
-            }
-            return code;
-        }
-
-        #endregion
-
-        #region parser
-
-        
         #endregion
 
     }

@@ -14,7 +14,7 @@ namespace GermanDict.Words.Parsers
                 return "";
             }
 
-            if (adjective is IUnusualAdjective unusual)
+            if (adjective is IAdjectiveUnusual unusual)
             {
                 return $"{unusual.Basic}{_PROPERTY_SEPARATOR}" +
                 $"{unusual.AdjectiveBoostingUnusual}{_PROPERTY_SEPARATOR}" +
@@ -41,7 +41,7 @@ namespace GermanDict.Words.Parsers
             {
                 string[] meanings = fragments[4].Split(_LIST_SEPARATOR);
                 string[] phrases = fragments[5].Split(_LIST_SEPARATOR);
-                return new UnusualAdjective(fragments[0], fragments[2], fragments[3], AdjectiveBoostingUnusual, phrases.ToList(), meanings.ToList());
+                return new AdjectiveUnusual(fragments[0], fragments[2], fragments[3], AdjectiveBoostingUnusual, phrases.ToList(), meanings.ToList());
             }
             else
             {

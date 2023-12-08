@@ -4,83 +4,75 @@ namespace GermanDict.Words
 {
     public abstract class ArticleBase : IArticle
     {
-        protected ArticleBase(int id, string name)
+        protected ArticleBase(string name)
         {
-            Id = id;
             Name = name;
         }
 
-        #region IArtikel
+        #region IArticle
 
         public string Name { get; }
-        public int Id { get; }
-
-        #endregion
-
-        public abstract WordType WordType { get; }
 
         public abstract Language Language { get; }
 
-        public bool Equals(IWord? other)
+        #endregion
+
+        #region IFormattable
+
+        public string ToString(string? format, IFormatProvider? formatProvider)
+        {
+            return $"{Name} ({Language})";
+        }
+
+        #endregion
+
+        #region Equals
+
+        public bool Equals(IDictionaryItem? other)
         {
             if (other is IArticle article)
             {
-                if (WordType == article.WordType || Language == article.Language || Name == article.Name || Id == article.Id)
+                if (Language == article.Language && Name == article.Name)
                 {
                     return true;
                 }
             }
             return false;
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            return Equals(obj);
+        }
+
+        #endregion
 
         public abstract bool IsMatchingWithText(string text);
 
-        public string ToString(string? format, IFormatProvider? formatProvider)
-        {
-            throw new NotImplementedException();
-        }
     }
 
-    public sealed class DeutschArtikel : ArticleBase
+    public sealed class DeutschArticle : ArticleBase
     {
-        private DeutschArtikel(int id, string name)
-            :base(id, name)
+        private DeutschArticle(string name)
+            : base(name)
         {
         }
 
-        public static DeutschArtikel None { get; } = new DeutschArtikel(0, "-");
-        public static DeutschArtikel Der { get; } = new DeutschArtikel(1, "der");
-        public static DeutschArtikel Die { get; } = new DeutschArtikel(1, "die");
-        public static DeutschArtikel Das { get; } = new DeutschArtikel(1, "das");
+        public static DeutschArticle None { get; } = new DeutschArticle("-");
+        public static DeutschArticle Der { get; } = new DeutschArticle("der");
+        public static DeutschArticle Die { get; } = new DeutschArticle("die");
+        public static DeutschArticle Das { get; } = new DeutschArticle("das");
 
-        #region IWord
-
-        public override WordType WordType => WordType.Article;
 
         public override Language Language => Language.German;
 
-        public string ToString(string? format, IFormatProvider? formatProvider)
-        {
-            return Name;
-        }
-
-        public bool Equals(IWord? other)
-        {
-            if (other is IArticle article)
-            {
-                if (WordType == article.WordType || Language == article.Language || Name == article.Name || Id == article.Id)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        #endregion
-
         #region IRepositoryElement
 
-        public bool IsMatchingWithText(string text)
+        public override bool IsMatchingWithText(string text)
         {
             throw new NotImplementedException();
         }
@@ -88,39 +80,20 @@ namespace GermanDict.Words
         #endregion
     }
 
-    public sealed class HungarianArticle : IArticle
+    public sealed class HungarianArticle : ArticleBase, IArticle
     {
-        #region IArtikel
-
-        public string Name { get; }
-        public int Id { get; }
-
-        #endregion
-
-        private HungarianArticle(int id, string name)
+        private HungarianArticle(string name)
+            : base(name)
         {
-            Id = id;
-            Name = name;
         }
 
-        public static HungarianArticle None { get; } = new HungarianArticle(0, "-");
+        public static HungarianArticle None { get; } = new HungarianArticle("-");
 
-        #region IWord
-
-        public WordType WordType => WordType.Article;
-
-        public Language Language => throw new NotImplementedException();
-
-        public string ToString(string? format, IFormatProvider? formatProvider)
-        {
-            return Name;
-        }
-
-        #endregion
+        public override Language Language => Language.Hungarian;
 
         #region IRepositoryElement
 
-        public bool IsMatchingWithText(string text)
+        public override bool IsMatchingWithText(string text)
         {
             throw new NotImplementedException();
         }

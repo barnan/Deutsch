@@ -1,12 +1,11 @@
-﻿using Factories;
-using GermanDict.Interfaces;
+﻿using GermanDict.Interfaces;
 
 namespace GermanDict.Words
 {
     internal class Verb : Word, IVerb
     {
-        public Verb(string infinitive, string inflected, string praeteritum, string perfect, IEnumerable<string> phrases, IEnumerable<string> hun_meanings)
-            : base (hun_meanings, phrases)
+        public Verb(Language language, List<IWordAttribute> attributes, string infinitive, string inflected, string praeteritum, string perfect)
+            : base(language, attributes)
         {
             Infinitive = infinitive;
             Inflected = inflected;
@@ -56,9 +55,7 @@ namespace GermanDict.Words
             return Infinitive.Contains(text) ||
                    Inflected.Contains(text) ||
                    Praeteritum.Contains(text) ||
-                   Perfect.Contains(text) ||
-                   Phrases.Contains(text) ||
-                   HUN_Meanings.Contains(text);
+                   Perfect.Contains(text);
         }
 
         #endregion
@@ -81,16 +78,17 @@ namespace GermanDict.Words
             switch (format.ToUpperInvariant())
             {
                 case "S":
-                    return $"{Infinitive}{Environment.NewLine}" +
-                        $"{HUN_Meanings}{Environment.NewLine}";
+                    return $"{Infinitive}{Environment.NewLine}";
                 case "L":
                 default:
-                    return $"{Infinitive}{Environment.NewLine}" +
-                        $"{string.Join(',', HUN_Meanings.ToArray())}{Environment.NewLine}" +
+                    string attrib = WordAttributes.Count > 0 ? $"[{string.Join(',', WordAttributes)}]{Environment.NewLine}" : "";
+
+                    return $"{Language}{Environment.NewLine}" +
+                        attrib +
+                        $"{Infinitive}{Environment.NewLine}" +
                         $"{Inflected}{Environment.NewLine}" +
                         $"{Praeteritum}{Environment.NewLine}" +
-                        $"{Perfect}{Environment.NewLine}" +
-                        $"{string.Join(',', Phrases.ToArray())}{Environment.NewLine}";
+                        $"{Perfect}{Environment.NewLine}";
             }
         }
 
@@ -98,12 +96,20 @@ namespace GermanDict.Words
 
         #region IEquatable
 
-        public override bool Equals(IWord? other)
+        public override bool Equals(IDictionaryItem? other)
         {
-            if (other == null)
+            if (!(other is IVerb verb))
+            {
                 return false;
+            }
 
-            if (this.GetHashCode() == other.GetHashCode())
+            var distinct = WordAttributes.Except(verb.WordAttributes, new WordAttributesComparer());
+
+            if ((verb as IDictionaryItem).Equals(other) &&
+                Infinitive == verb.Infinitive &&
+                Inflected == verb.Inflected &&
+                Praeteritum == verb.Praeteritum &&
+                Perfect == verb.Perfect)
             {
                 return true;
             }
@@ -113,39 +119,24 @@ namespace GermanDict.Words
             }
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
 
-            IVerb verbObj = obj as IVerb;
 
-            if (verbObj == null)
-            {
-                return false;
-            }
-            else
-            {
-                return Equals(verbObj);
-            }
-        }
-
-        public override int GetHashCode()
-        {
-            string codeText = $"{Infinitive}{Inflected}{Praeteritum}{Perfect}";        // {string.Join('', Phrases)}{string.Join('', HUN_Meanings)}
-            int code = 0;
-            foreach (char ch in codeText)
-            {
-                code += ch;
-            }
-            return code;
-        }
+        //public override int GetHashCode()
+        //{
+        //    string codeText = $"{Infinitive}{Inflected}{Praeteritum}{Perfect}";        // {string.Join('', Phrases)}{string.Join('', HUN_Meanings)}
+        //    int code = 0;
+        //    foreach (char ch in codeText)
+        //    {
+        //        code += ch;
+        //    }
+        //    return code;
+        //}
 
         #endregion
 
         #region parser
 
-        
+
 
         #endregion
     }
