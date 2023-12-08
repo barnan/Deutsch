@@ -8,7 +8,7 @@ namespace GermanDict.Interfaces
 
     public interface INounFactoryParameters : IFactoryParameters
     {
-        Article Article { get; }
+        IArticle Article { get; }
         string Word { get; }
         string PluralForm { get; }
         IEnumerable<string> Phrases { get; } 

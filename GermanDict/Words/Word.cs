@@ -6,29 +6,19 @@ namespace GermanDict.Words
     {
         protected int _MINIMUM_MATCHING_WORD_LENGTH = 3;
 
-        public Word(IEnumerable<string> phrases, IEnumerable<string> hun_meanings)
+        public Word()
         {
-            HUN_Meanings = hun_meanings;
-            Phrases = phrases;
         }
 
         #region IWord
 
-        public IEnumerable<string> Phrases
-        {
-            get;
-            private set;
-        }
-
-        public IEnumerable<string> HUN_Meanings
-        {
-            get;
-            private set;
-        }
-
         public abstract WordType WordType { get; }
 
-        public abstract bool Equals(IWord? other);
+        public Language Language { get; }
+
+        public List<IWordAttribute> WordAttributes { get; } = new List<IWordAttribute> { };
+
+        public abstract bool Equals(IDictionaryItem? other);
 
         public abstract bool IsMatchingWithText(string text);
 

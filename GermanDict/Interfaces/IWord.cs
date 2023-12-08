@@ -1,16 +1,51 @@
 ﻿
 namespace GermanDict.Interfaces
 {
-    public interface IWord : IFormattable, IEquatable<IWord>, IRepositoryElement
+
+    public interface IDictionaryItem : IFormattable, IEquatable<IDictionaryItem>, IRepositoryElement
     {
-        IEnumerable<string> Phrases { get; }
-
-        IEnumerable<string> HUN_Meanings { get; }
-
-        WordType WordType { get; }        
+        Language Language { get; }
     }
-    
-    
+
+
+
+    public interface IDictionaryItemPair
+    {
+        IDictionaryItem Item1 { get; }
+        IDictionaryItem Item2 { get; }
+    }
+
+
+    public interface IWord : IDictionaryItem
+    {
+        WordType WordType { get; }
+
+        List<IWordAttribute> WordAttributes { get; }
+    }
+
+
+    public interface IPhrase : IDictionaryItem
+    {
+        string Text { get; }
+        bool Contains(IWord word);
+    }
+
+
+    public interface IWordAttribute : IDictionaryItem
+    {
+        public string Text { get; set; }
+    }
+
+
+
+
+    public interface IArticle : IWord
+    {
+        string Name { get; }
+        int Id { get; }
+    }
+
+
     public interface IVerb : IWord
     {
         string Infinitive { get; }
@@ -21,6 +56,7 @@ namespace GermanDict.Interfaces
 
         string Perfect { get; }
     }
+
 
     public interface IVerbHandler : IVerb
     {
@@ -36,16 +72,17 @@ namespace GermanDict.Interfaces
 
     public interface INoun : IWord
     {
-        Article Article { get; }
+        IArticle Article { get; }
 
         string Word { get; }
 
         string PluralForm { get; }
     }
 
+
     public interface INounHandler : INoun
     {
-        new Article Article { get; set; }
+        new IArticle Article { get; set; }
 
         new string Word { get; set; }
 
@@ -59,6 +96,7 @@ namespace GermanDict.Interfaces
 
         bool AdjectiveBoostingUnusual { get; }
     }
+
 
     public interface IAdjectiveHandler : IAdjective
     {
@@ -75,6 +113,7 @@ namespace GermanDict.Interfaces
 
         string Superlative { get; }
     }
+
 
     public interface IUnusualAdjectiveHandler : IUnusualAdjective
     {

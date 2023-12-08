@@ -1,29 +1,29 @@
-﻿using System.ComponentModel;
-
+﻿
 namespace GermanDict.Interfaces
 {
-    public enum Article
-    {
-        [Description("-")]
-        None,
-        [Description("der")]
-        r,
-        [Description("die")]
-        e,
-        [Description("das")]
-        s        
-    }
 
     public enum WordType
     {
+        Article,
         Noun,
         Verb,
-        Adjective
+        Adjective        
     }
+
+
+    public enum Language
+    {
+        Unknown,
+        Hungarian,
+        German,
+        English,
+    }
+
 
     public enum AdjectiveBoosting
     {
         Normal,
         Unusual
     }
+
 }
