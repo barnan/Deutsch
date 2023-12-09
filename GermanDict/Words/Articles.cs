@@ -62,6 +62,11 @@ namespace GermanDict.Words
         {
         }
 
+        public static IEnumerable<DeutschArticle> GetArticles()
+        {
+            return new List<DeutschArticle> { None, Der, Die, Das };
+        }
+
         public static DeutschArticle None { get; } = new DeutschArticle("-");
         public static DeutschArticle Der { get; } = new DeutschArticle("der");
         public static DeutschArticle Die { get; } = new DeutschArticle("die");

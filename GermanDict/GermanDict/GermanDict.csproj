@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
+    <ProjectReference Include="..\WordHDDTextRepository\WordHDDTextRepository.csproj" />
   </ItemGroup>
 
 </Project>

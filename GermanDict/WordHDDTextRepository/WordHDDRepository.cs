@@ -9,16 +9,16 @@ namespace GermanDict.WordHDDTextRepository
     {
         #region consts
 
-        private const string _HDD_FOLDER_PATH_SUPPLEMENT = "WordHDDTextRepositry";
+        private const string _HDD_FOLDER_PATH_SUPPLEMENT = "WordHDDTextRepository";
         private const int _MAINTENANCE_CYCLE_TIME_MS = 10000;
 
-        #endregion
+        #endregion consts
 
         #region private fields
 
         private MyCollection<T> _set;
-        private string _folderFullPath; 
-        private string _fileFullPath; 
+        private string _folderFullPath;
+        private string _fileFullPath;
         private Thread _maintenanceThread;
         private CancellationTokenSource _cts;
 
@@ -27,7 +27,7 @@ namespace GermanDict.WordHDDTextRepository
 
         private object _lockObj;
 
-        #endregion
+        #endregion private fields
 
         public WordHDDRepository(string externalPath, string fileName, IParser<T> parser)
         {
@@ -41,6 +41,7 @@ namespace GermanDict.WordHDDTextRepository
                 Directory.CreateDirectory(_folderFullPath);
             }
 
+            _set = new MyCollection<T>();
             _parser = parser;
             _fileHandler = new RepositoryTextFileHandler(_fileFullPath);
 
@@ -51,19 +52,31 @@ namespace GermanDict.WordHDDTextRepository
                 Name = $"{nameof(WordHDDRepository<T>)}_Maintenance_Thread"
             };
             _maintenanceThread.Start(_cts.Token);
-        }        
+
+            try
+            {
+                IEnumerable<string> fileContent = _fileHandler.GetContent();
+                IEnumerable<T> ts = fileContent.Select(a => _parser.Parse(a));
+                AddRange(ts);
+            }
+            catch (Exception ex)
+            {
+                // do something!!!
+                // logging or something
+            }
+        }
 
         #region IRepository<IWord>
 
         public void Add(T itemToAdd)
         {
-            lock(_lockObj)
+            lock (_lockObj)
             {
                 if (_set.Contains(itemToAdd))
                 {
                     return;
                 }
-                _set.Add(itemToAdd);               
+                _set.Add(itemToAdd);
             }
         }
 
@@ -74,23 +87,15 @@ namespace GermanDict.WordHDDTextRepository
                 foreach (T item in items)
                 {
                     Add(item);
-                } 
+                }
             }
         }
 
         public IEnumerable<T> Find(Predicate<T> predicate)
         {
-            lock(_lockObj)
+            lock (_lockObj)
             {
-                List<T> results = new List<T>();
-                foreach (var item in _set)
-                {
-                    if (predicate.Invoke(item))
-                    {
-                        results.Add(item);
-                    }
-                }
-                return results;
+                return _set.Find(predicate);
             }
         }
 
@@ -130,13 +135,13 @@ namespace GermanDict.WordHDDTextRepository
         {
             lock (_lockObj)
             {
-                _set.Remove(itemToRemove); 
+                _set.Remove(itemToRemove);
             }
         }
 
         public void RemoveRange(IEnumerable<T> itemsToRemove)
         {
-            lock(_lockObj)
+            lock (_lockObj)
             {
                 foreach (var item in itemsToRemove)
                 {
@@ -145,7 +150,7 @@ namespace GermanDict.WordHDDTextRepository
             }
         }
 
-        #endregion
+        #endregion IRepository<IWord>
 
         #region Maintenance
 
@@ -153,9 +158,9 @@ namespace GermanDict.WordHDDTextRepository
         {
             if (obj is not CancellationToken token)
             {
-                // do something!!
-                return;
+                throw new ArgumentException("Not proper parameter");
             }
+
             while (true)
             {
                 if (token.IsCancellationRequested)
@@ -169,6 +174,7 @@ namespace GermanDict.WordHDDTextRepository
                 Thread.Sleep(_MAINTENANCE_CYCLE_TIME_MS);
             }
         }
+
         private void DoMaintenanceInternal()
         {
             try
@@ -180,9 +186,10 @@ namespace GermanDict.WordHDDTextRepository
             catch (Exception ex)
             {
                 // do something!!!
+                // logging or something
             }
         }
 
-        #endregion
+        #endregion Maintenance
     }
 }

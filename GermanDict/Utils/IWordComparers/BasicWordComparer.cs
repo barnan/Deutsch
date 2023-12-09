@@ -18,6 +18,7 @@ namespace Utils
 
             if (word2 == null)
             {
+
                 return 1;
             }
 
@@ -57,7 +58,7 @@ namespace Utils
                 return noun1.Word.CompareTo(noun2.Word);
             }
 
-            return noun1.Article < noun2.Article ? -1 : 1;  
+            return 1;  
         }
 
         private int CompareVerb(IVerb verb1, IVerb verb2)

@@ -1,4 +1,7 @@
-﻿using GermanDict.UserControls;
+﻿using Factories;
+using GermanDict.Factories;
+using GermanDict.Interfaces;
+using GermanDict.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,11 +29,22 @@ namespace GermanDict
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            this.DataContext = new MainViewModel();
 
             this.Title = "GermanDict " + GetRunningVersion();
 
-            UserControl[] userControls = new UserControl[] { new SearchWordUserControl_WPF(), new AddWordUserControl_WPF() };
+            IParser<IWord> wordParser = WordFactory.GetParser();
+            IRepository<IWord> wordRepository = RepositoryFactory<IWord>.CreateRepository(@"c:\Source\Deutsch\", "wordRepository.bin", wordParser);
+
+            UserControl[] addWordUserControls = new UserControl[] { 
+                new NounUserControl_WPF(wordRepository), 
+                new VerbUserControl_WPF(wordRepository), 
+                new AdjectiveUserControl_WPF(wordRepository) };
+
+            UserControl[] userControls = new UserControl[] { 
+                new SearchWordUserControl_WPF(), 
+                new AddWordUserControl_WPF(addWordUserControls) };
+            
             CreateTabControlItems(tabControl1, userControls);
 
         }

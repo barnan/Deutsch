@@ -24,7 +24,7 @@ namespace GermanDict.Interfaces
 
     public interface IWordAttribute : IDictionaryItem
     {
-        public string Text { get; set; }
+        public string Text { get; }
     }
 
 

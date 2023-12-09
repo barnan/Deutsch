@@ -31,7 +31,7 @@ namespace GermanDict.WordHDDTextRepository.Collection
             try
             {
                 _set.Clear();
-                _updated = false;
+                _updated = true;
             }
             finally
             {
@@ -72,6 +72,24 @@ namespace GermanDict.WordHDDTextRepository.Collection
             }
         }
 
+        public int Count
+        {
+            get
+            {
+                _rwls.EnterReadLock();
+                try
+                {
+                    return _set.Count;
+                }
+                finally
+                {
+                    _rwls.ExitReadLock();
+                }
+            }
+        }
+
+        public bool IsReadOnly => false;
+
         public IEnumerator<T> GetEnumerator()
         {
             return (_set as IEnumerable<T>).GetEnumerator();
@@ -100,7 +118,7 @@ namespace GermanDict.WordHDDTextRepository.Collection
             }
         } 
             
-        internal void Resetupdate()
+        internal void ResetUpdated()
         {
             _rwls.EnterWriteLock();
             try
@@ -113,22 +131,33 @@ namespace GermanDict.WordHDDTextRepository.Collection
             }
         }
 
-        public int Count
+        internal void Reset()
         {
-            get
+            _rwls.EnterWriteLock();
+            try
             {
-                _rwls.EnterReadLock();
-                try
-                {
-                    return _set.Count;
-                }
-                finally
-                {
-                    _rwls.ExitReadLock();
-                }
+                Clear();
+                ResetUpdated();
+            }
+            finally
+            {
+                _rwls.ExitWriteLock();
             }
         }
 
-        public bool IsReadOnly => false;
+        internal IEnumerable<T> Find(Predicate<T> predicate)
+        {
+            _rwls.EnterReadLock();
+            try
+            {
+                Func<T, bool> func = new Func<T, bool>(predicate);
+                return _set.Where(func);
+            }
+            finally
+            {
+                _rwls.ExitReadLock();
+            }
+        }
+
     }
 }

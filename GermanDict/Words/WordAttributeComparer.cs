@@ -24,6 +24,7 @@ namespace GermanDict.Words
             return false;
         }
 
+        // todo: disallownull???
         public int GetHashCode([DisallowNull] IWordAttribute attrib)
         {
             return attrib.GetHashCode();
