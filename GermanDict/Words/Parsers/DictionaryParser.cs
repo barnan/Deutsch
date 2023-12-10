@@ -1,18 +1,16 @@
 ﻿using GermanDict.Factories;
 using GermanDict.Interfaces;
-using System.Text;
 
 
 namespace GermanDict.Words.Parsers
 {
-    internal class Parser : IParser<IWord>
+    internal class DictionaryParser : IDictionaryParser<IDictionaryItem>
     {
         protected const char _PROPERTY_SEPARATOR = ';';
-        protected const char _LIST_SEPARATOR = ':';
-        protected const char _DEPTH_SEPARATOR = ':';
+        protected const char _DEPTH_SEPARATOR = '/';
 
 
-        public IWord Parse(string text)
+        public IDictionaryItem Parse(string text)
         {
             string[] parts = text.Split(_DEPTH_SEPARATOR);
             string[] fragments = parts[0].Split(_PROPERTY_SEPARATOR);
@@ -22,8 +20,6 @@ namespace GermanDict.Words.Parsers
             {
                 case WordType.Noun:
                     return Parse_Noun(text);
-                //case WordType.Article:
-                //    return Parse_Article(text);
                 case WordType.Verb:
                     return Parse_Verb(text);
                 case WordType.Adjective:
@@ -33,14 +29,30 @@ namespace GermanDict.Words.Parsers
             }
         }
 
-        public string Convert(IWord word)
+        public string Convert(IDictionaryItem item)
         {
+            if (item is IArticle article)
+            {
+                return Convert_Article(article);
+            }
+            if (item is IWordAttribute attribute)
+            {
+                return Convert_Attribute(attribute);
+            }
+            if (item is IPhrase)
+            {
+                throw new NotImplementedException();
+            }
+            
+            if (item is not IWord word)
+            {
+                throw new ArgumentException();
+            }
+            
             switch (word.WordType)
             {
                 case WordType.Noun:
                     return Convert_Noun(word);
-                //case WordType.Article:
-                //    return Convert_Article(word);
                 case WordType.Verb:
                     return Convert_Verb(word);
                 case WordType.Adjective:
@@ -50,34 +62,39 @@ namespace GermanDict.Words.Parsers
             }
         }
 
-
         #region Attributes
 
-        private List<IWordAttribute> Parse_Attributes(string attributeText)
+        //private List<IWordAttribute> Parse_Attributes(string attributesText)
+        //{
+        //    List<IWordAttribute> attribList = new List<IWordAttribute>();
+
+        //    string[] attribs = attributesText.Split(_LIST_SEPARATOR);
+        //    foreach (var item in attribs)
+        //    {
+        //        attribList.Add(Parse_Attribute(item));
+        //    }
+        //    return attribList;
+        //}
+
+        //private string Convert_Attributes(List<IWordAttribute> attributeList)
+        //{
+        //    IEnumerable<string> stringList = attributeList.Select(Convert_Attribute);
+        //    return string.Join(_LIST_SEPARATOR, stringList);
+        //}
+
+        private IWordAttribute Parse_Attribute(string attributeText)
         {
-            List<IWordAttribute> attribList = new List<IWordAttribute>();
+            string[] fragments = attributeText.Split(_PROPERTY_SEPARATOR);
 
-            string[] attribs = attributeText.Split(_LIST_SEPARATOR);
-            foreach (var item in attribs)
-            {
-                string[] fragments = item.Split(_PROPERTY_SEPARATOR);
-                Language lang = (Language)Enum.Parse(typeof(Language), fragments[1]);
-
-                IWordAttribute attribute = WordFactory.Create_Attribute(lang, fragments[0]);
-                attribList.Add(attribute);
-            }
-            return attribList;
+            IWordAttribute attribute = WordFactory.Create_Attribute(fragments[1]);
+            return attribute;
         }
 
-        private string Convert_Attributes(List<IWordAttribute> attributeList)
+        private string Convert_Attribute(IWordAttribute attribute)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (var attrib in attributeList)
-            {
-                sb.Append($"{attrib.Text}{_PROPERTY_SEPARATOR}{attrib.Language}" +
-                    $"{_LIST_SEPARATOR}");
-            }
-            return sb.ToString();
+            return $"{WordType.Attribute}" +
+                $"{_PROPERTY_SEPARATOR}" +
+                $"{attribute.Text}";
         }
 
         #endregion
@@ -101,8 +118,9 @@ namespace GermanDict.Words.Parsers
                 throw new ArgumentException("Not proper parameter");
             }
 
-            return $"{article.Name}{_PROPERTY_SEPARATOR}" +
-                $"{article.Language}{_PROPERTY_SEPARATOR}";
+            return $"{article.Name}" +
+                $"{_PROPERTY_SEPARATOR}" +
+                $"{article.Language}";
         }
 
 
@@ -117,10 +135,10 @@ namespace GermanDict.Words.Parsers
 
             Language lang = (Language)Enum.Parse(typeof(Language), fragments[1]);
 
-            string atributesText = parts[1];
-            List<IWordAttribute> atributes = Parse_Attributes(atributesText);
+            string atributeText = parts[1];
+            IWordAttribute atribute = Parse_Attribute(atributeText);
 
-            IWord verb = WordFactory.Create_Verb(lang, atributes, fragments[3], fragments[4], fragments[5], fragments[6]);
+            IWord verb = WordFactory.Create_Verb(lang, atribute, fragments[3], fragments[4], fragments[5], fragments[6]);
 
             return verb;
         }
@@ -132,7 +150,7 @@ namespace GermanDict.Words.Parsers
                 throw new ArgumentException("Not proper parameter");
             }
 
-            string attributesText = Convert_Attributes(verb.WordAttributes);
+            string attributeText = Convert_Attribute(verb.WordAttribute);
 
             return $"{_DEPTH_SEPARATOR}" +
                 $"{verb.WordType}{_PROPERTY_SEPARATOR}" +
@@ -142,7 +160,7 @@ namespace GermanDict.Words.Parsers
                 $"{verb.Praeteritum}{_PROPERTY_SEPARATOR}" +
                 $"{verb.Perfect}" +
                 $"{_DEPTH_SEPARATOR}" +
-                $"{attributesText}{_DEPTH_SEPARATOR}";
+                $"{attributeText}{_DEPTH_SEPARATOR}";
         }
 
         #endregion
@@ -156,8 +174,8 @@ namespace GermanDict.Words.Parsers
 
             Language lang = (Language)Enum.Parse(typeof(Language), fragments[1]);
 
-            string attributesText = parts[1];
-            List<IWordAttribute> attributes = Parse_Attributes(attributesText);
+            string attributeText = parts[1];
+            IWordAttribute attributes = Parse_Attribute(attributeText);
 
             string articleText = parts[2];
             IArticle article = Parse_Article(articleText);
@@ -173,16 +191,16 @@ namespace GermanDict.Words.Parsers
             {
                 throw new ArgumentException("Not proper parameter");
             }
-            string attributesText = Convert_Attributes(noun.WordAttributes);
+            string attributeText = Convert_Attribute(noun.WordAttribute);
             string articleText = Convert_Article(noun.Article);
 
             return $"{_DEPTH_SEPARATOR}" +
                 $"{noun.WordType}{_PROPERTY_SEPARATOR}" +
                 $"{noun.Language}{_PROPERTY_SEPARATOR}" +
-                $"{noun.Word}{_PROPERTY_SEPARATOR}" +
+                $"{noun.SingularForm}{_PROPERTY_SEPARATOR}" +
                 $"{noun.PluralForm}" +
                 $"{_DEPTH_SEPARATOR}" +
-                $"{attributesText}{_DEPTH_SEPARATOR}" +
+                $"{attributeText}{_DEPTH_SEPARATOR}" +
                 $"{articleText}{_DEPTH_SEPARATOR}";
         }
 
@@ -197,7 +215,7 @@ namespace GermanDict.Words.Parsers
                 throw new ArgumentException("Not proper parameter");
             }
 
-            string attributesText = Convert_Attributes(adjective.WordAttributes);
+            string attributeText = Convert_Attribute(adjective.WordAttribute);
 
             if (adjective is IAdjectiveUnusual unusual)
             {
@@ -209,7 +227,7 @@ namespace GermanDict.Words.Parsers
                 $"{unusual.Comparative}{_PROPERTY_SEPARATOR}" +
                 $"{unusual.Superlative}" +
                 $"{_DEPTH_SEPARATOR}" +
-                $"{attributesText}{_DEPTH_SEPARATOR}";
+                $"{attributeText}{_DEPTH_SEPARATOR}";
             }
             else
             {
@@ -219,7 +237,7 @@ namespace GermanDict.Words.Parsers
                 $"{adjective.AdjectiveBoostingUnusual}" +
                 $"{adjective.Basic}{_PROPERTY_SEPARATOR}" +
                 $"{_DEPTH_SEPARATOR}" +
-                $"{attributesText}{_DEPTH_SEPARATOR}";
+                $"{attributeText}{_DEPTH_SEPARATOR}";
             }
         }
 
@@ -230,18 +248,18 @@ namespace GermanDict.Words.Parsers
 
             Language lang = (Language)Enum.Parse(typeof(Language), fragments[1]);
 
-            string attributesText = parts[1];
-            List<IWordAttribute> attributes = Parse_Attributes(attributesText);
+            string attributeText = parts[1];
+            IWordAttribute attribute = Parse_Attribute(attributeText);
 
             bool AdjectiveBoostingUnusual = bool.Parse(fragments[2]);
 
             if (AdjectiveBoostingUnusual)
             {
-                return WordFactory.Create_UnusualAdjective(lang, attributes, fragments[3], fragments[4], fragments[5], AdjectiveBoostingUnusual);
+                return WordFactory.Create_UnusualAdjective(lang, attribute, fragments[3], fragments[4], fragments[5], AdjectiveBoostingUnusual);
             }
             else
             {
-                return WordFactory.Create_Adjective(lang, attributes, fragments[3], AdjectiveBoostingUnusual);
+                return WordFactory.Create_Adjective(lang, attribute, fragments[3], AdjectiveBoostingUnusual);
             }
         }
 

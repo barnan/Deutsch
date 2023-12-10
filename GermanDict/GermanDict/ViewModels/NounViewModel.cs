@@ -1,11 +1,15 @@
 ﻿using GermanDict.Interfaces;
-using System.Collections.Generic;
 
 namespace GermanDict.ViewModels
 {
 	public class NounViewModel : WordViewModel
     {
-        public NounViewModel(IRepository<IWord> repository)
+        // it is needed because of the designinstance in the xaml
+        public NounViewModel()
+        {
+        }
+
+        public NounViewModel(IRepository<IDictionaryItem> repository)
             : base(repository)
         {
         }
@@ -26,19 +30,19 @@ namespace GermanDict.ViewModels
 		}
 
 
-		private string _word;
-		public string Word
+		private string _singularForm;
+		public string SingularForm
 		{
-			get { return _word; }
+			get { return _singularForm; }
 			set
 			{
-				_word = value;
+				_singularForm = value;
 				OnPropertyChanged();
 			}
 		}
 
-		private string _pluralForm;
 
+		private string _pluralForm;
 		public string PluralForm
 		{
 			get { return _pluralForm; }
@@ -49,30 +53,6 @@ namespace GermanDict.ViewModels
 			}
 		}
 
-		private List<string> _phrases;
-		public List<string> Phrases
-		{
-			get { return _phrases; }
-			set
-			{
-				_phrases = value;
-				OnPropertyChanged();
-			}
-		}
-
-
-		private List<string> _hun_Meanings;
-        
-
-        public List<string> HUN_Meanings
-		{
-			get { return _hun_Meanings; }
-			set
-			{
-				_hun_Meanings = value;
-				OnPropertyChanged();
-			}
-		}
-
+		
 	}
 }

@@ -55,7 +55,7 @@ namespace Utils
         {
             if (noun1.Article == noun2.Article)
             {
-                return noun1.Word.CompareTo(noun2.Word);
+                return noun1.SingularForm.CompareTo(noun2.SingularForm);
             }
 
             return 1;  

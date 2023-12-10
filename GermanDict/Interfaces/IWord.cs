@@ -2,35 +2,10 @@
 namespace GermanDict.Interfaces
 {
 
-    public interface IDictionaryItem : IFormattable, IEquatable<IDictionaryItem>, IRepositoryElement
-    {
-        Language Language { get; }
-    }
-
-
-    public interface IWord : IDictionaryItem
+    public interface IWord : ILanguageDictionaryItem
     {
         WordType WordType { get; }
-        List<IWordAttribute> WordAttributes { get; }
-    }
-
-
-    public interface IPhrase : IDictionaryItem
-    {
-        string Text { get; }
-        bool Contains(IWord word);
-    }
-
-
-    public interface IWordAttribute : IDictionaryItem
-    {
-        public string Text { get; }
-    }
-
-
-    public interface IArticle : IDictionaryItem
-    {
-        string Name { get; }
+        IWordAttribute WordAttribute { get; }
     }
 
 
@@ -62,7 +37,7 @@ namespace GermanDict.Interfaces
     {
         IArticle Article { get; }
 
-        string Word { get; }
+        string SingularForm { get; }
 
         string PluralForm { get; }
     }

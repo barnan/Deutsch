@@ -4,8 +4,8 @@ namespace GermanDict.Words
 {
     internal class Adjective : Word, IAdjective
     {
-        public Adjective(Language language, List<IWordAttribute> attributes, string basic, bool adjectiveBoostingUnusual)
-            : base(language, attributes)
+        public Adjective(Language language, IWordAttribute attribute, string basic, bool adjectiveBoostingUnusual)
+            : base(language, attribute)
         {
             Basic = basic;
             AdjectiveBoostingUnusual = adjectiveBoostingUnusual;
@@ -58,10 +58,8 @@ namespace GermanDict.Words
                     return $"{Basic}{Environment.NewLine}";
                 case "L":
                 default:
-                    string attrib = WordAttributes.Count > 0 ? $"[{string.Join(',', WordAttributes)}]{Environment.NewLine}" : "";
-
                     return $"{Language}{Environment.NewLine}" +
-                        attrib +
+                        $"{WordAttribute}{Environment.NewLine}" +
                         $"{Basic}{Environment.NewLine}";
             }
         }
@@ -77,10 +75,10 @@ namespace GermanDict.Words
                 return false;
             }
 
-            var distinct = WordAttributes.Except(adj.WordAttributes, new WordAttributesComparer());
+            var comparer = new WordAttributesComparer();
 
             if ((adj as IWord).Equals(other) &&
-                distinct.Count() == 0 &&
+                comparer.Equals(WordAttribute, adj.WordAttribute) &&
                 Basic == adj.Basic)
             {
                 return true;

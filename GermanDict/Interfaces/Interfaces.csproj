@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="52zi2wyx.a4a~" />
+  </ItemGroup>
+
 </Project>

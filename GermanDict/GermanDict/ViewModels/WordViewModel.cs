@@ -4,14 +4,19 @@ namespace GermanDict.ViewModels
 {
     public abstract class WordViewModel : ViewModelBase
     {
-		public abstract WordType WordType { get; }
-
-        public IRepository<IWord> Repository { get; }
-
-        public WordViewModel(IRepository<IWord> repository)
+        public WordViewModel(IRepository<IDictionaryItem> repository)
         {
             Repository = repository;
         }
+
+        // it is needed because of the designinstance in the xaml
+        public WordViewModel()
+        {
+        }
+
+        public abstract WordType WordType { get; }
+
+        public IRepository<IDictionaryItem> Repository { get; }
 
     }
 }

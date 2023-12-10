@@ -15,14 +15,14 @@ namespace GermanDict.Factories
                     {
                         throw new ArgumentException($"{wordType} can not be created with the recived {nameof(IWordFactoryParameters)}");
                     }
-                    return Create_Noun(nounParameters.Language, nounParameters.Attributes, nounParameters.Article, nounParameters.Word, nounParameters.PluralForm);
+                    return Create_Noun(nounParameters.Language, nounParameters.Attribute, nounParameters.Article, nounParameters.Word, nounParameters.PluralForm);
 
                 case WordType.Verb:
                     if (!(factoryParameter is IVerbFactoryParameters verbParameters))
                     {
                         throw new ArgumentException($"{wordType} can not be created with the recived {nameof(IWordFactoryParameters)}");
                     }
-                    return Create_Verb(verbParameters.Language, verbParameters.Attributes, verbParameters.Infinitive, verbParameters.Inflected, verbParameters.Praeteritum, verbParameters.Perfect);
+                    return Create_Verb(verbParameters.Language, verbParameters.Attribute, verbParameters.Infinitive, verbParameters.Inflected, verbParameters.Praeteritum, verbParameters.Perfect);
 
                 case WordType.Adjective:
                     if (!(factoryParameter is IAdjectiveFactoryParameters adjParameters))
@@ -32,10 +32,10 @@ namespace GermanDict.Factories
                     
                     if (adjParameters.AdjectiveBoostingUnusual && factoryParameter is IUnusualAdjectiveFactoryParameters unusualAdjParameters)
                     {
-                        return Create_UnusualAdjective(unusualAdjParameters.Language, unusualAdjParameters.Attributes, unusualAdjParameters.Basic, unusualAdjParameters.Comparative, unusualAdjParameters.Superlative, unusualAdjParameters.AdjectiveBoostingUnusual);
+                        return Create_UnusualAdjective(unusualAdjParameters.Language, unusualAdjParameters.Attribute, unusualAdjParameters.Basic, unusualAdjParameters.Comparative, unusualAdjParameters.Superlative, unusualAdjParameters.AdjectiveBoostingUnusual);
                     }
                     
-                    return Create_Adjective(adjParameters.Language, adjParameters.Attributes, adjParameters.Basic, adjParameters.AdjectiveBoostingUnusual);
+                    return Create_Adjective(adjParameters.Language, adjParameters.Attribute, adjParameters.Basic, adjParameters.AdjectiveBoostingUnusual);
                 
                 default:
                     throw new ArgumentException($"{nameof(WordType)} ({wordType}) can not be interpreted");
@@ -43,24 +43,24 @@ namespace GermanDict.Factories
         }
 
 
-        internal static IVerb Create_Verb(Language language, List<IWordAttribute> attributes, string infinitive, string inflected, string praeteritum, string perfect)
+        internal static IVerb Create_Verb(Language language, IWordAttribute attribute, string infinitive, string inflected, string praeteritum, string perfect)
         {
-            return new Verb(language, attributes, infinitive, inflected, praeteritum, perfect);
+            return new Verb(language, attribute, infinitive, inflected, praeteritum, perfect);
         }
 
-        internal static INoun Create_Noun(Language language, List<IWordAttribute> attributes, IArticle article, string word, string pluralForm)
+        internal static INoun Create_Noun(Language language, IWordAttribute attribute, IArticle article, string word, string pluralForm)
         {
-            return new Noun(language, attributes, article, word, pluralForm);
+            return new Noun(language, attribute, article, word, pluralForm);
         }
 
-        internal static IAdjective Create_Adjective(Language language, List<IWordAttribute> attributes, string basic, bool adjectiveBoostingUnusual)
+        internal static IAdjective Create_Adjective(Language language, IWordAttribute attribute, string basic, bool adjectiveBoostingUnusual)
         {
-            return new Adjective(language, attributes, basic, adjectiveBoostingUnusual);
+            return new Adjective(language, attribute, basic, adjectiveBoostingUnusual);
         }
 
-        internal static IAdjectiveUnusual Create_UnusualAdjective(Language language, List<IWordAttribute> attributes, string basic, string comparative, string superlative, bool adjectiveBoostingUnusual)
+        internal static IAdjectiveUnusual Create_UnusualAdjective(Language language, IWordAttribute attribute, string basic, string comparative, string superlative, bool adjectiveBoostingUnusual)
         {
-            return new AdjectiveUnusual(language, attributes, basic, comparative, superlative, adjectiveBoostingUnusual);
+            return new AdjectiveUnusual(language, attribute, basic, comparative, superlative, adjectiveBoostingUnusual);
         }
 
         internal static IArticle Create_Article(string name, Language lang)
@@ -80,14 +80,14 @@ namespace GermanDict.Factories
             }
         }
 
-        internal static IWordAttribute Create_Attribute(Language language, string name)
+        internal static IWordAttribute Create_Attribute(string name)
         {
-            return new WordAttribute(language, name);
+            return new WordAttribute(name);
         }
 
-        public static IParser<IWord> GetParser()
+        public static IDictionaryParser<IDictionaryItem> GetParser()
         {
-            return new Parser();
+            return new DictionaryParser();
         }
 
 

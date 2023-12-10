@@ -4,8 +4,8 @@ namespace GermanDict.Words
 {
     internal class AdjectiveUnusual : Adjective, IAdjectiveUnusual
     {
-        public AdjectiveUnusual(Language language, List<IWordAttribute> attributes, string basic, string comparative, string superlative, bool adjectiveBoostingUnusual) 
-            : base(language, attributes, basic, adjectiveBoostingUnusual)
+        public AdjectiveUnusual(Language language, IWordAttribute attribute, string basic, string comparative, string superlative, bool adjectiveBoostingUnusual) 
+            : base(language, attribute, basic, adjectiveBoostingUnusual)
         {
             Comparative = comparative;
             Superlative = superlative;
@@ -58,10 +58,8 @@ namespace GermanDict.Words
                     return $"{Basic}{Environment.NewLine}";
                 case "L":
                 default:
-                    string attrib = WordAttributes.Count > 0 ? $"[{string.Join(',', WordAttributes)}]{Environment.NewLine}" : "";
-
                     return $"{Language}{Environment.NewLine}" +
-                        attrib +
+                        $"{WordAttribute}{Environment.NewLine}" +
                         $"{Basic}{Environment.NewLine}" +
                         $"{Comparative}{Environment.NewLine}" +
                         $"{Superlative}{Environment.NewLine}";
@@ -79,10 +77,10 @@ namespace GermanDict.Words
                 return false;
             }
 
-            var distinct = WordAttributes.Except(adju.WordAttributes, new WordAttributesComparer());
+            var comparer = new WordAttributesComparer();
 
             if ((adju as IAdjective).Equals(other) &&
-                distinct.Count() == 0 &&
+                comparer.Equals(WordAttribute, adju.WordAttribute) &&
                 Comparative == adju.Comparative &&
                 Superlative == adju.Superlative)
             {

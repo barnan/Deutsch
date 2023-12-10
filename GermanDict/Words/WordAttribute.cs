@@ -5,15 +5,12 @@ namespace GermanDict.Words
 {
     internal class WordAttribute : IWordAttribute
     {
-        public WordAttribute(Language lang, string text)
+        public WordAttribute(string text)
         {
             Text = text;
-            Language = lang;
         }
 
         public string Text { get; }
-
-        public Language Language { get; }
 
         public bool Equals(IDictionaryItem? other)
         {
@@ -21,7 +18,7 @@ namespace GermanDict.Words
             {
                 return false;
             }
-            if (attrib.Language == Language && attrib.Text == Text)
+            if (attrib.Text == Text)
             {
                 return true;
             }
@@ -43,11 +40,9 @@ namespace GermanDict.Words
             switch (format.ToUpperInvariant())
             {
                 case "S":
-                    return $"{Text}";
                 case "L":
                 default:
-                    return $"{Language}{Environment.NewLine}" +
-                        $"{Text}{Environment.NewLine}";
+                    return $"[{Text}]";
             }
         }
     }

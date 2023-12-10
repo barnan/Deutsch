@@ -4,7 +4,12 @@ namespace GermanDict.ViewModels
 {
     public class AdjectiveViewModel : WordViewModel
     {
-        public AdjectiveViewModel(IRepository<IWord> repository) 
+        // it is needed because of the designinstance in the xaml
+        public AdjectiveViewModel()
+        {
+        }
+
+        public AdjectiveViewModel(IRepository<IDictionaryItem> repository) 
             : base(repository)
         {
         }

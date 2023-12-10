@@ -31,6 +31,7 @@
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
         <GroupBox Grid.Column = "0" Grid.Row="0" Grid.RowSpan="2">
             <StackPanel Orientation="Vertical" >
                 <RadioButton GroupName="SelectWordType" Content="Noun" 
@@ -53,8 +54,7 @@
         </GroupBox>
 
         <GroupBox Grid.Column = "1" Grid.Row="0" Grid.RowSpan="2">
-            <ContentPresenter x:Name="cp1" Content="{Binding SelectedUserControl}"
-                              Visibility="{Binding SelectedUserControl.Visibility}"/>
+            <ContentPresenter x:Name="cp1" Content="{Binding SelectedUserControl}"/>
         </GroupBox>
         
 

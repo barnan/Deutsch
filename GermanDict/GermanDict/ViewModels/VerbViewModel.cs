@@ -4,8 +4,13 @@ namespace GermanDict.ViewModels
 {
     public class VerbViewModel : WordViewModel
     {
-        public VerbViewModel(IRepository<IWord> repository) 
+        public VerbViewModel(IRepository<IDictionaryItem> repository) 
             : base(repository)
+        {
+        }
+
+        // it is needed because of the designinstance in the xaml
+        public VerbViewModel()
         {
         }
 

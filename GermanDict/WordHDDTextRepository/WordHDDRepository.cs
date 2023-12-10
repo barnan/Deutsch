@@ -22,14 +22,14 @@ namespace GermanDict.WordHDDTextRepository
         private Thread _maintenanceThread;
         private CancellationTokenSource _cts;
 
-        private IParser<T> _parser;
+        private IDictionaryParser<T> _parser;
         private IRepositoryTextFileHandler _fileHandler;
 
         private object _lockObj;
 
         #endregion private fields
 
-        public WordHDDRepository(string externalPath, string fileName, IParser<T> parser)
+        public WordHDDRepository(string externalPath, string fileName, IDictionaryParser<T> parser)
         {
             _lockObj = new object();
 

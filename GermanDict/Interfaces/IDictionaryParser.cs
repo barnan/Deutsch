@@ -1,7 +1,7 @@
 ﻿
 namespace GermanDict.Interfaces
 {
-    public interface IParser<T>
+    public interface IDictionaryParser<T>
     {
         T Parse(string text);
 

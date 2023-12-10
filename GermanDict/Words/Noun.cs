@@ -4,11 +4,11 @@ namespace GermanDict.Words
 {
     internal class Noun : Word, INoun
     {
-        public Noun(Language language, List<IWordAttribute> attributes, IArticle article, string word, string pluralForm)
-            : base(language, attributes)
+        public Noun(Language language, IWordAttribute attribute, IArticle article, string word, string pluralForm)
+            : base(language, attribute)
         {
             Article = article;
-            Word = word;
+            SingularForm = word;
             PluralForm = pluralForm;
         }
 
@@ -20,7 +20,7 @@ namespace GermanDict.Words
             private set;
         }
 
-        public string Word
+        public string SingularForm
         {
             get;
             private set;
@@ -46,7 +46,7 @@ namespace GermanDict.Words
             }
 
             return Article.ToString() == text ||
-                   Word.Contains(text) ||
+                   SingularForm.Contains(text) ||
                    PluralForm.Contains(text);
         }
 
@@ -70,15 +70,13 @@ namespace GermanDict.Words
             switch (format.ToUpperInvariant())
             {
                 case "S":
-                    return $"{Word}{Environment.NewLine}";
+                    return $"{SingularForm}{Environment.NewLine}";
                 case "L":
                 default:
-                    string attrib = WordAttributes.Count > 0 ? $"[{string.Join(',', WordAttributes)}]{Environment.NewLine}" : "";
-
                     return $"{Language}{Environment.NewLine}" +
-                        attrib +
+                        $"{WordAttribute}{Environment.NewLine}" +
                         $"{Article}{Environment.NewLine}" +
-                        $"{Word}{Environment.NewLine}" +
+                        $"{SingularForm}{Environment.NewLine}" +
                         $"{PluralForm}{Environment.NewLine}";
             }
         }
@@ -93,13 +91,12 @@ namespace GermanDict.Words
             {
                 return false;
             }
-
-            var distinct = WordAttributes.Except(noun.WordAttributes, new WordAttributesComparer());
+            var comparer = new WordAttributesComparer();
 
             if ((noun as IWord).Equals(other) &&
-                distinct.Count() == 0 &&
+                comparer.Equals(WordAttribute, noun.WordAttribute) &&
                 Article == noun.Article &&
-                Word == noun.Word &&
+                SingularForm == noun.SingularForm &&
                 PluralForm == noun.PluralForm)
             {
                 return true;

@@ -12,6 +12,11 @@ namespace GermanDict.Words
                 return true;
             }
 
+            if (x is null && y is null)
+            {
+                return true;
+            }
+
             if (x is null || y is null)
             {
                 return false;

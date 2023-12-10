@@ -8,8 +8,52 @@
              xmlns:interfaces="clr-namespace:GermanDict.Interfaces"
              xmlns:vm="clr-namespace:GermanDict.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="450" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance Type=vm:VerbViewModel, IsDesignTimeCreatable=True}">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TextBox">
+                <Setter Property="Width" Value="150" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Article"/>
+        <ComboBox Grid.Column="1" Grid.Row="0"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Word"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding SingularForm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Plural Form"/>
+        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding PluralForm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Attribute"/>
+        <ComboBox Grid.Column="1" Grid.Row="3"/>
+
     </Grid>
 </UserControl>

@@ -7,7 +7,7 @@ namespace GermanDict.Interfaces
     public interface IWordFactoryParameters
     {
         Language Language { get; }
-        List<IWordAttribute> Attributes { get; }
+        IWordAttribute Attribute { get; }
     }
 
     public interface INounFactoryParameters : IWordFactoryParameters

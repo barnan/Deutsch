@@ -10,10 +10,10 @@ namespace GermanDict.Words
         {
         }
 
-        protected Word(Language language, List<IWordAttribute> attributes)
+        protected Word(Language language, IWordAttribute attributes)
         {
             Language = language;
-            WordAttributes = attributes;
+            WordAttribute = attributes;
         }
 
         #region IWord
@@ -22,7 +22,7 @@ namespace GermanDict.Words
 
         public Language Language { get; }
 
-        public List<IWordAttribute> WordAttributes { get; }
+        public IWordAttribute WordAttribute { get; }
         
         #endregion
 
@@ -47,8 +47,8 @@ namespace GermanDict.Words
                 return false;
             }
 
-            var distinct = WordAttributes.Except(word.WordAttributes, new WordAttributesComparer());
-            if (Language == word.Language && distinct.Count() == 0)
+            var comparer = new WordAttributesComparer();
+            if (Language == word.Language && comparer.Equals(WordAttribute, word.WordAttribute))
             {
                 return true;
             }

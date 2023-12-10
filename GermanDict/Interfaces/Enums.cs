@@ -5,6 +5,8 @@ namespace GermanDict.Interfaces
     public enum WordType
     {
         Article,
+        Attribute,
+        Phrase,
         Noun,
         Verb,
         Adjective        

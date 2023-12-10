@@ -8,8 +8,9 @@ namespace GermanDict.ViewModels
 {
 	public class AddWordViewModel : ViewModelBase
 	{
+        // it is needed because of the designinstance in the xaml
         public AddWordViewModel()
-        {            
+        {
         }
 
         public AddWordViewModel(UserControl[] userControls)

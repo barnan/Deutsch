@@ -4,8 +4,8 @@ namespace GermanDict.Words
 {
     internal class Verb : Word, IVerb
     {
-        public Verb(Language language, List<IWordAttribute> attributes, string infinitive, string inflected, string praeteritum, string perfect)
-            : base(language, attributes)
+        public Verb(Language language, IWordAttribute attribute, string infinitive, string inflected, string praeteritum, string perfect)
+            : base(language, attribute)
         {
             Infinitive = infinitive;
             Inflected = inflected;
@@ -81,10 +81,8 @@ namespace GermanDict.Words
                     return $"{Infinitive}{Environment.NewLine}";
                 case "L":
                 default:
-                    string attrib = WordAttributes.Count > 0 ? $"[{string.Join(',', WordAttributes)}]{Environment.NewLine}" : "";
-
                     return $"{Language}{Environment.NewLine}" +
-                        attrib +
+                        $"{WordAttribute}{Environment.NewLine}" +
                         $"{Infinitive}{Environment.NewLine}" +
                         $"{Inflected}{Environment.NewLine}" +
                         $"{Praeteritum}{Environment.NewLine}" +
@@ -102,10 +100,10 @@ namespace GermanDict.Words
             {
                 return false;
             }
-
-            var distinct = WordAttributes.Except(verb.WordAttributes, new WordAttributesComparer());
+            var comparer = new WordAttributesComparer();
 
             if ((verb as IDictionaryItem).Equals(other) &&
+                comparer.Equals(WordAttribute, verb.WordAttribute) &&
                 Infinitive == verb.Infinitive &&
                 Inflected == verb.Inflected &&
                 Praeteritum == verb.Praeteritum &&
