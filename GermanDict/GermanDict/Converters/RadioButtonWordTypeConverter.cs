@@ -10,7 +10,13 @@ namespace GermanDict.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             WordType selectedWordType = (WordType)value;
-            string text = (string)parameter;
+            string text = parameter as string;
+
+            if (text == null)
+            {
+                return Binding.DoNothing;
+            }
+
             if (selectedWordType.ToString() == text)
             {
                 return true;

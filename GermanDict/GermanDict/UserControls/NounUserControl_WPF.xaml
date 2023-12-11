@@ -52,7 +52,13 @@
         <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding PluralForm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Attribute"/>
-        <ComboBox Grid.Column="1" Grid.Row="3"/>
+        <ComboBox Grid.Column="1" Grid.Row="3"
+                  ItemsSource="{Binding AvailableWordAttribute}"
+                  SelectedItem="{Binding SelectedArticle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Phrases"/>
+        <ListView Grid.Column="1" Grid.Row="4" >
+        </ListView>
 
     </Grid>
 </UserControl>

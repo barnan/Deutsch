@@ -6,7 +6,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GermanDict.UserControls"
              xmlns:converters="clr-namespace:GermanDict.Converters"
-             xmlns:interfaces="clr-namespace:GermanDict.Interfaces"
              xmlns:vm="clr-namespace:GermanDict.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="500"

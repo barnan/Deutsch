@@ -4,11 +4,72 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GermanDict.UserControls"
+             xmlns:converters="clr-namespace:GermanDict.Converters"
              xmlns:vm="clr-namespace:GermanDict.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=vm:NounViewModel, IsDesignTimeCreatable=True}">
+             d:DesignHeight="450" d:DesignWidth="500"
+             d:DataContext="{d:DesignInstance Type=vm:AdjectiveViewModel, IsDesignTimeCreatable=True}">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TextBox">
+                <Setter Property="Width" Value="150" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
+
+            <converters:BoolToVisibilityCollapsedComverter x:Key="BoolToVisibilityCollapsedComverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Is Adjective Unusual"/>
+        <ComboBox Grid.Column="1" Grid.Row="0"
+                  ItemsSource="{Binding AvailableAdjectiveBoosting}"
+                  SelectedItem="{Binding IsAdjectiveBoostingUnusual, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Basic"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Basic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Comparative"/>
+        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Comparative, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Visibility="{Binding IsAdjectiveBoostingUnusual, Converter={StaticResource BoolToVisibilityCollapsedComverter}}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Superlative"/>
+        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Superlative, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Visibility="{Binding IsAdjectiveBoostingUnusual, Converter={StaticResource BoolToVisibilityCollapsedComverter}}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Attribute"/>
+        <ComboBox Grid.Column="1" Grid.Row="4"
+                  ItemsSource="{Binding AvailableWordAttribute}"
+                  SelectedItem="{Binding SelectedArticle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  
+
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Phrases"/>
+        <ListView Grid.Column="1" Grid.Row="5" >
+        </ListView>
+
     </Grid>
 </UserControl>
