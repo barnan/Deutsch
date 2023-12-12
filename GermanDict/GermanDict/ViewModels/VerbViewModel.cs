@@ -8,6 +8,7 @@ namespace GermanDict.ViewModels
         public VerbViewModel(IRepository<IDictionaryItem> repository) 
             : base(repository)
         {
+            Name = "AddVerb";
         }
 
         // it is needed because of the designinstance in the xaml

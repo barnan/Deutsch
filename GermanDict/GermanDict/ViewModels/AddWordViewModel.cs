@@ -18,9 +18,10 @@ namespace GermanDict.ViewModels
             UserControls = userControls;
             SelectedUserControl = UserControls[0];
             AddButtonCommand = new RelayCommand(AddCommandAction);
+            Name = "AddWord";
         }
         
-
+        
         private UserControl _selectedUserControl;
 		public UserControl SelectedUserControl
         {

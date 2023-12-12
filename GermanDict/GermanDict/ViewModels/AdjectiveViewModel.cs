@@ -13,6 +13,7 @@ namespace GermanDict.ViewModels
         public AdjectiveViewModel(IRepository<IDictionaryItem> repository) 
             : base(repository)
         {
+            Name = "AddAdjective";
         }
 
         public override WordType WordType => WordType.Adjective;

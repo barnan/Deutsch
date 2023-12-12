@@ -13,6 +13,7 @@ namespace GermanDict.ViewModels
         public NounViewModel(IRepository<IDictionaryItem> repository)
             : base(repository)
         {
+            Name = "AddNoun";
         }
 
 

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace GermanDict
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -14,6 +14,8 @@ namespace GermanDict
         }
 
         private bool _isVisible = true;
+        private string _name;
+
         public bool IsVisible
         {
             get { return _isVisible; }
@@ -24,6 +26,15 @@ namespace GermanDict
             }
         }
 
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
 
     }
 }

@@ -34,7 +34,10 @@ namespace GermanDict
 
             UserControl[] userControls = new UserControl[] { 
                 new SearchWordUserControl_WPF(), 
-                new AddWordUserControl_WPF(addWordUserControls) };
+                new AddWordUserControl_WPF(addWordUserControls),
+                new AddArticleUserControl_WPF(),
+                new AddAttributeUserControl_WPF()
+            };
 
             //------------------------------------------------------------------------------------------------------------------
 

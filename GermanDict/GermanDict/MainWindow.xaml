@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GermanDict"
         mc:Ignorable="d"
-        Title="Title Unset" Height="450" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Title Unset" Height="450" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        d:DataContext="{d:DesignInstance Type=local:MainViewModel, IsDesignTimeCreatable=True}">
 
     <Grid>
         <Grid.RowDefinitions>

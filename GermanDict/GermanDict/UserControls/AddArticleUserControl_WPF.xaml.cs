@@ -4,15 +4,15 @@ using System.Windows.Controls;
 namespace GermanDict.UserControls
 {
     /// <summary>
-    /// Interaction logic for AddWordUserControl_WPF.xaml
+    /// Interaction logic for AddArticleAttributeUserControl_WPF.xaml
     /// </summary>
-    public partial class AddWordUserControl_WPF : UserControl
+    public partial class AddArticleUserControl_WPF : UserControl
     {
-        public AddWordUserControl_WPF(UserControl[] userControls)
+        public AddArticleUserControl_WPF()
         {
             InitializeComponent();
 
-            AddWordViewModel vm = new AddWordViewModel(userControls);
+            AddArticleViewModel vm = new AddArticleViewModel();
             DataContext = vm;
             Name = vm.Name;
         }
