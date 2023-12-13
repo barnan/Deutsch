@@ -8,7 +8,55 @@
              xmlns:vm="clr-namespace:GermanDict.ViewModels"
              d:DesignHeight="450" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance Type=vm:AddArticleViewModel, IsDesignTimeCreatable=True}">
-    <Grid>
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/MyResourceDictionary.xaml"/>
+                <ResourceDictionary>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Margin" Value="5" />
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="5" />
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
+    <Grid Background="#FFE5E5E5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="150"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        
+        <GroupBox Grid.Column = "0" Grid.Row="0" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Select Language:"/>
+                <ComboBox />
+            </StackPanel>            
             
+        </GroupBox>
+
+        <GroupBox Grid.Column = "1" Grid.Row="0">
+            <ListView/>
+        </GroupBox>
+
+        <GroupBox Header="Article Editor" Grid.Column = "0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2">
+            <StackPanel Orientation="Horizontal">
+                <TextBox  />
+                <Button Content="+" Command="{Binding}"/>
+                <Button Content="-" Command="{Binding}"/>
+            </StackPanel>
+        </GroupBox>
+
+
     </Grid>
 </UserControl>

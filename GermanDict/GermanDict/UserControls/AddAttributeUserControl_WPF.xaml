@@ -8,7 +8,20 @@
              xmlns:vm="clr-namespace:GermanDict.ViewModels"
              d:DesignHeight="450" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance Type=vm:AddArticleViewModel, IsDesignTimeCreatable=True}">
-    <Grid>
-            
-    </Grid>
+
+    
+    <StackPanel Orientation="Vertical" Width="200" HorizontalAlignment="Left">
+        <GroupBox Header="Available Attributes" Grid.Column = "1" Grid.Row="0" Height="100">
+            <ListView />
+        </GroupBox>
+
+        <GroupBox Header="Add Attribute">
+            <StackPanel Orientation="Horizontal">
+                <TextBox Width="100" />
+                <Button Content="+" Command="{Binding}"/>
+                <Button Content="-" Command="{Binding}"/>
+            </StackPanel>
+        </GroupBox>
+    </StackPanel>
+    
 </UserControl>

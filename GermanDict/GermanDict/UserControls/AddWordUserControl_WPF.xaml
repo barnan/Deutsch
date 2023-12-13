@@ -10,11 +10,16 @@
              d:DesignHeight="450" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance Type=vm:AddWordViewModel, IsDesignTimeCreatable=True}">
 
+    
+    
+    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="RadioButton">
-                <Setter Property="Margin" Value="5,10" />
+                <Setter Property="Margin" Value="5"/>
             </Style>
+
             <converters:RadioButtonWordTypeConverter x:Key="RadioButtonWordTypeConverter" />
         </ResourceDictionary>
     </UserControl.Resources>

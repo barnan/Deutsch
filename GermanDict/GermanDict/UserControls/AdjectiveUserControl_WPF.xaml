@@ -9,26 +9,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance Type=vm:AdjectiveViewModel, IsDesignTimeCreatable=True}">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
-            <Style TargetType="TextBox">
-                <Setter Property="Width" Value="150" />
-                <Setter Property="Height" Value="20" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="HorizontalAlignment" Value="Left" />
-            </Style>
-            <Style TargetType="TextBlock">
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="HorizontalAlignment" Value="Left" />
-            </Style>
-            <Style TargetType="ComboBox">
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="HorizontalAlignment" Value="Left" />
-            </Style>
-
-            <converters:BoolToVisibilityCollapsedComverter x:Key="BoolToVisibilityCollapsedComverter" />
-        </ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/MyResourceDictionary.xaml"/>
+                <ResourceDictionary>
+                    <converters:BoolToVisibilityCollapsedComverter x:Key="BoolToVisibilityCollapsedComverter" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            
+         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
@@ -62,7 +53,7 @@
                  Visibility="{Binding IsAdjectiveBoostingUnusual, Converter={StaticResource BoolToVisibilityCollapsedComverter}}"/>
 
         <TextBlock Grid.Column="0" Grid.Row="4" Text="Attribute"/>
-        <ComboBox Grid.Column="1" Grid.Row="4"
+        <ComboBox Grid.Column="1" Grid.Row="4" 
                   ItemsSource="{Binding AvailableWordAttribute}"
                   SelectedItem="{Binding SelectedArticle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                   

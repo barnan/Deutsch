@@ -8,6 +8,10 @@
         Title="Title Unset" Height="450" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance Type=local:MainViewModel, IsDesignTimeCreatable=True}">
 
+    <!--<Window.Resources>
+        <ResourceDictionary Source="Resources/MyResourceDictionary.xaml" />
+    </Window.Resources>-->
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
