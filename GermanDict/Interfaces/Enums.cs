@@ -28,4 +28,10 @@ namespace GermanDict.Interfaces
         Unusual
     }
 
+    public enum RepositoryState
+    {
+        Idle,
+        Busy
+    }
+
 }

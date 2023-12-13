@@ -9,13 +9,16 @@
              d:DesignHeight="450" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance Type=vm:AddArticleViewModel, IsDesignTimeCreatable=True}">
 
-    
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources/MyResourceDictionary.xaml" />
+    </UserControl.Resources>
+
     <StackPanel Orientation="Vertical" Width="200" HorizontalAlignment="Left">
         <GroupBox Header="Available Attributes" Grid.Column = "1" Grid.Row="0" Height="100">
             <ListView />
         </GroupBox>
 
-        <GroupBox Header="Add Attribute">
+        <GroupBox Header="Attribute Editor">
             <StackPanel Orientation="Horizontal">
                 <TextBox Width="100" />
                 <Button Content="+" Command="{Binding}"/>

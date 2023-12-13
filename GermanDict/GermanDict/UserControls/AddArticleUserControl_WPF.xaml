@@ -14,9 +14,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/MyResourceDictionary.xaml"/>
                 <ResourceDictionary>
-                    <Style TargetType="TextBox">
-                        <Setter Property="Margin" Value="5" />
-                    </Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Margin" Value="5" />
                     </Style>
@@ -27,9 +24,9 @@
     </UserControl.Resources>
 
 
-    <Grid Background="#FFE5E5E5">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -37,15 +34,14 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         
-        <GroupBox Grid.Column = "0" Grid.Row="0" VerticalAlignment="Top">
+        <GroupBox Header="Select Language" Grid.Column="0" Grid.Row="0">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Select Language:"/>
                 <ComboBox />
             </StackPanel>            
             
         </GroupBox>
 
-        <GroupBox Grid.Column = "1" Grid.Row="0">
+        <GroupBox Header="Available Articles" Grid.Column = "1" Grid.Row="0">
             <ListView/>
         </GroupBox>
 

@@ -4,7 +4,7 @@ using GermanDict.Interfaces;
 
 namespace GermanDict.Words.Parsers
 {
-    internal class DictionaryParser : IDictionaryParser<IDictionaryItem>
+    internal class DictionaryItemParser : IDictionaryItemParser<IDictionaryItem>
     {
         protected const char _PROPERTY_SEPARATOR = ';';
         protected const char _DEPTH_SEPARATOR = '/';

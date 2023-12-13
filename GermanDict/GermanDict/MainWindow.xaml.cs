@@ -24,7 +24,7 @@ namespace GermanDict
 
             //------------------------------------------------------------------------------------------------------------------
             // Factory part: 
-            IDictionaryParser<IDictionaryItem> wordParser = WordFactory.GetParser();
+            IDictionaryItemParser<IDictionaryItem> wordParser = WordFactory.GetParser();
             IRepository<IDictionaryItem> wordRepository = RepositoryFactory<IDictionaryItem>.CreateRepository(@"c:\Source\Deutsch\", "wordRepository.bin", wordParser);
 
             UserControl[] addWordUserControls = new UserControl[] { 

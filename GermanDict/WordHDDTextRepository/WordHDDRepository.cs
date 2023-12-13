@@ -1,10 +1,11 @@
 ﻿using GermanDict.Interfaces;
 using GermanDict.WordHDDTextRepository.FileHandlers;
 using GermanDict.WordHDDTextRepository.Collection;
+using Interfaces;
 
 namespace GermanDict.WordHDDTextRepository
 {
-    public class WordHDDRepository<T> : IRepository<T>
+    public class WordHDDRepository<T> : IRepository<T>, Interfaces.IObserver<RepositoryState>
         where T : IRepositoryElement
     {
         #region consts
@@ -22,14 +23,14 @@ namespace GermanDict.WordHDDTextRepository
         private Thread _maintenanceThread;
         private CancellationTokenSource _cts;
 
-        private IDictionaryParser<T> _parser;
+        private IDictionaryItemParser<T> _parser;
         private IRepositoryTextFileHandler _fileHandler;
 
         private object _lockObj;
 
         #endregion private fields
 
-        public WordHDDRepository(string externalPath, string fileName, IDictionaryParser<T> parser)
+        public WordHDDRepository(string externalPath, string fileName, IDictionaryItemParser<T> parser)
         {
             _lockObj = new object();
 
@@ -191,5 +192,24 @@ namespace GermanDict.WordHDDTextRepository
         }
 
         #endregion Maintenance
+
+        #region IObserver<T>
+
+        public RepositoryState GetState()
+        {
+            throw new NotImplementedException();
+        }
+
+        public event EventHandler<EventArgs<RepositoryState, RepositoryState>> StateChanged;
+
+        protected void OnStateChanged(RepositoryState oldState, RepositoryState newState)
+        {
+            EventArgs<RepositoryState, RepositoryState> repoStateArgs = new EventArgs<RepositoryState, RepositoryState>(oldState, newState);
+            var stateChanged = StateChanged;
+
+            stateChanged(this, repoStateArgs);
+        }
+
+        #endregion
     }
 }

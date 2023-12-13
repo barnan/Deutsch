@@ -10,10 +10,6 @@
              d:DesignHeight="450" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance Type=vm:AddWordViewModel, IsDesignTimeCreatable=True}">
 
-    
-    
-    
-
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="RadioButton">
@@ -24,10 +20,10 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="#FFE5E5E5">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>

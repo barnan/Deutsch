@@ -1,4 +1,6 @@
 ﻿
+using Interfaces;
+
 namespace GermanDict.Interfaces
 {
     public interface IRepository<T> 
@@ -19,4 +21,12 @@ namespace GermanDict.Interfaces
 
         void RemoveRange(IEnumerable<T> words);
     }
+
+    public interface IObserver<T>
+    {
+        T GetState();
+
+        event EventHandler<EventArgs<T, T>> StateChanged;
+    }
+        
 }

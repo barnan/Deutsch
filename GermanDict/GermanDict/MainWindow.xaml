@@ -11,11 +11,11 @@
     <!--<Window.Resources>
         <ResourceDictionary Source="Resources/MyResourceDictionary.xaml" />
     </Window.Resources>-->
-    
-    <Grid>
+
+    <Grid Background="#FFE5E5E5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0" x:Name="tabControl1"/>
 

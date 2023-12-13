@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="500"             
              d:DataContext="{d:DesignInstance Type=vm:SearchWordViewModel, IsDesignTimeCreatable=True}">
 
-    <Grid Background="#FFE5E5E5">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
