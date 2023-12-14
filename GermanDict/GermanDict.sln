@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GermanDict", "GermanDict\Ge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\Interfaces.csproj", "{02AF781E-38A8-448C-A5EB-AF718A506FEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordHDDTextRepository", "WordHDDTextRepository\WordHDDTextRepository.csproj", "{14DBB171-F81E-4C51-82F4-4DA7F1828E44}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Words", "Words\Words.csproj", "{0DBCE578-87CD-4C6F-B492-3B1F06604E92}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordDBRepository", "WordDBRepository\WordDBRepository.csproj", "{757FEE06-669F-4536-B1C2-22B9A2B1C0EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{53973B2B-8D69-4C31-B555-5604D6715C3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{53973B2B-8D69-4C31-B555-5604D6715C3C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HDDTextRepository", "HDDTextRepository\HDDTextRepository.csproj", "{D97D3B2D-57B1-4BAF-B254-026F9A8620A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,6 @@ Global
 		{02AF781E-38A8-448C-A5EB-AF718A506FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02AF781E-38A8-448C-A5EB-AF718A506FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02AF781E-38A8-448C-A5EB-AF718A506FEC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14DBB171-F81E-4C51-82F4-4DA7F1828E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14DBB171-F81E-4C51-82F4-4DA7F1828E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14DBB171-F81E-4C51-82F4-4DA7F1828E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14DBB171-F81E-4C51-82F4-4DA7F1828E44}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0DBCE578-87CD-4C6F-B492-3B1F06604E92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0DBCE578-87CD-4C6F-B492-3B1F06604E92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DBCE578-87CD-4C6F-B492-3B1F06604E92}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{53973B2B-8D69-4C31-B555-5604D6715C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53973B2B-8D69-4C31-B555-5604D6715C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53973B2B-8D69-4C31-B555-5604D6715C3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D97D3B2D-57B1-4BAF-B254-026F9A8620A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D97D3B2D-57B1-4BAF-B254-026F9A8620A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D97D3B2D-57B1-4BAF-B254-026F9A8620A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D97D3B2D-57B1-4BAF-B254-026F9A8620A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

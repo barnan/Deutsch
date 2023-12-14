@@ -1,6 +1,6 @@
 ﻿
 using GermanDict.Interfaces;
-using GermanDict.WordHDDTextRepository;
+using GermanDict.HDDTextRepository;
 
 namespace Factories
 {
@@ -11,7 +11,7 @@ namespace Factories
         public static IRepository<T> CreateRepository(string externalPath, string fileName, IDictionaryItemParser<T> parser)
         {
             //if (parser is IParser<IWord> wordParser)
-            return new WordHDDRepository<T>(externalPath, fileName, parser);
+            return new HDDRepository<T>(externalPath, fileName, parser);
 
         }
 

@@ -1,7 +1,7 @@
 ﻿using GermanDict.Interfaces;
 using System.Text;
 
-namespace GermanDict.WordHDDTextRepository.FileHandlers
+namespace GermanDict.HDDTextRepository.FileHandlers
 {
     internal class RepositoryTextFileHandler : IRepositoryTextFileHandler
     {

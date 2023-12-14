@@ -1,7 +1,7 @@
 ﻿
 using System.Collections;
 
-namespace GermanDict.WordHDDTextRepository.Collection
+namespace GermanDict.HDDTextRepository.Collection
 {
     internal class MyCollection<T> : ICollection<T>
     {

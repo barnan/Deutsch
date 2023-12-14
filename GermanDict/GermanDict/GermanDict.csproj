@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HDDTextRepository\HDDTextRepository.csproj" />
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
-    <ProjectReference Include="..\WordHDDTextRepository\WordHDDTextRepository.csproj" />
   </ItemGroup>
 
   <ItemGroup>

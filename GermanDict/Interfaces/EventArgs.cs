@@ -23,4 +23,32 @@ namespace Interfaces
         }
     }
 
+
+    /// <summary>
+    /// copied from: https://www.codeproject.com/Articles/5341837/Asynchronous-Events-in-Csharp 
+    /// and I've commented some line of it.
+    /// </summary>
+    public static class AsyncEventsUsingTplExtension
+    {
+        public static void InvokeAsync<TEventArgs>(this EventHandler<TEventArgs> handler, object sender, TEventArgs args)
+        {
+            //Task.Factory.StartNew(() =>
+            //{
+                //Console.WriteLine("InvokeAsync<TEventArgs> is running on ThreadId:{0}",
+                //    Thread.CurrentThread.ManagedThreadId);
+
+                var delegates = handler?.GetInvocationList();
+
+                foreach (var delegated in delegates)
+                {
+                    var myEventHandler = delegated as EventHandler<TEventArgs>;
+                    if (myEventHandler != null)
+                    {
+                        Task.Factory.StartNew(() => myEventHandler(sender, args));
+                    }
+                };
+            //});
+        }
+    }
+
 }

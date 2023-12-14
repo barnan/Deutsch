@@ -1,6 +1,6 @@
 ﻿using GermanDict.Interfaces;
 
-namespace GermanDict.WordHDDTextRepository.FileHandlers
+namespace GermanDict.HDDTextRepository.FileHandlers
 {
     //internal class RepositoryBinaryTextFileHandler : IRepositoryTextFileHandler
     //{

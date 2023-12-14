@@ -20,6 +20,8 @@ namespace GermanDict.Interfaces
         void Remove(T word);
 
         void RemoveRange(IEnumerable<T> words);
+
+        event EventHandler<EventArgs<string>> RepositoryChanged;
     }
 
     public interface IObserver<T>

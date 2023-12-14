@@ -11,6 +11,7 @@
     <Style TargetType="TextBlock">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Margin" Value="5,0" />
     </Style>
     <Style TargetType="ComboBox">
         <Setter Property="VerticalAlignment" Value="Center" />

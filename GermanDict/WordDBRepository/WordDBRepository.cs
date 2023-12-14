@@ -1,11 +1,12 @@
 ﻿using GermanDict.Interfaces;
+using Interfaces;
 
 namespace GermanDict.WordDBRepository
 {
     public class WordDBRepository<T> : IRepository<T>
         where T : IRepositoryElement
     {
-
+        
         #region IRepository<IWord>
 
         public void Add(T word)
@@ -42,6 +43,8 @@ namespace GermanDict.WordDBRepository
         {
             throw new NotImplementedException();
         }
+
+        public event EventHandler<EventArgs<string>> RepositoryChanged;
 
         #endregion
     }
