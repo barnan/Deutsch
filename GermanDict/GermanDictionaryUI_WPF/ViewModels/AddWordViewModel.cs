@@ -3,12 +3,13 @@ using GermanDict.Interfaces;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows;
 
 namespace GermanDict.UI.ViewModels
 {
 	public class AddWordViewModel : ViewModelBase
 	{
-        // it is needed because of the designinstance in the xaml
+        // it is needed because of the design instance in the xaml
         public AddWordViewModel()
         {
         }
@@ -20,8 +21,10 @@ namespace GermanDict.UI.ViewModels
             AddButtonCommand = new RelayCommand(AddCommandAction);
             Name = "AddWord";
         }
-        
-        
+
+        public UserControl[] UserControls;
+
+
         private UserControl _selectedUserControl;
 		public UserControl SelectedUserControl
         {
@@ -30,16 +33,13 @@ namespace GermanDict.UI.ViewModels
 			{
                 if (_selectedUserControl != null)
                 {
-                    _selectedUserControl.Visibility = System.Windows.Visibility.Collapsed;
+                    _selectedUserControl.Visibility = Visibility.Collapsed;
                 }
                 _selectedUserControl = value;
-                _selectedUserControl.Visibility = System.Windows.Visibility.Visible;
+                _selectedUserControl.Visibility = Visibility.Visible;
                 OnPropertyChanged();
 			}
 		}
-
-
-        public UserControl[] UserControls;
 
 
         private WordType _selectedWordType;
@@ -51,8 +51,28 @@ namespace GermanDict.UI.ViewModels
                 _selectedWordType = value;
                 OnPropertyChanged();
 
-                UserControl selected = UserControls.First(p => (p.DataContext as WordViewModel).WordType == _selectedWordType);
+                UserControl selected = UserControls.First(p => (p.DataContext as WordHandlerViewModel).WordType == _selectedWordType);
                 SelectedUserControl = selected;
+
+                if (_selectedWordType == WordType.Article || _selectedWordType == WordType.Attribute)
+                {
+                    IsAddButtonVisible = Visibility.Hidden;
+                }
+                else
+                {
+                    IsAddButtonVisible = Visibility.Visible;
+                }
+            }
+        }
+
+        private Visibility _isAddButtonVisible;
+        public Visibility IsAddButtonVisible
+        {
+            get { return _isAddButtonVisible; }
+            set
+            {
+                _isAddButtonVisible = value;
+                OnPropertyChanged();
             }
         }
 
@@ -70,7 +90,7 @@ namespace GermanDict.UI.ViewModels
         }
 
          
-        private void AddCommandAction(object obj)
+        private void AddCommandAction()
         {
             ;
         }

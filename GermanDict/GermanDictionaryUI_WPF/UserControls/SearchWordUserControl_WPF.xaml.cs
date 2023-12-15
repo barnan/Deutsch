@@ -1,4 +1,5 @@
-﻿using GermanDict.UI.ViewModels;
+﻿using GermanDict.Interfaces;
+using GermanDict.UI.ViewModels;
 using System.Windows.Controls;
 
 namespace GermanDict.UI.UserControls
@@ -8,11 +9,11 @@ namespace GermanDict.UI.UserControls
     /// </summary>
     public partial class SearchWordUserControl_WPF : UserControl
     {
-        public SearchWordUserControl_WPF()
+        public SearchWordUserControl_WPF(IRepository<IDictionaryItem> repository)
         {
             InitializeComponent();
 
-            SearchWordViewModel vm = new SearchWordViewModel();
+            SearchWordViewModel vm = new SearchWordViewModel(repository);
             DataContext = vm;
             Name = vm.Name;
 

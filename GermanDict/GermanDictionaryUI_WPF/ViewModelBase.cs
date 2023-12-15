@@ -1,4 +1,4 @@
-﻿using Interfaces.BaseClasses;
+﻿using BaseClasses;
 
 namespace GermanDict.UI
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GermanDict.UI.ViewModels
 {
-    public class VerbViewModel : WordViewModel
+    public class VerbViewModel : WordHandlerViewModel
     {
         public VerbViewModel(IRepository<IDictionaryItem> repository) 
             : base(repository)

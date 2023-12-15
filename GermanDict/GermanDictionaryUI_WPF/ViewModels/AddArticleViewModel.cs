@@ -3,10 +3,15 @@ using System.Collections.ObjectModel;
 
 namespace GermanDict.UI.ViewModels
 {
-    public class AddArticleViewModel : ViewModelBase
+    public class AddArticleViewModel : WordHandlerViewModel
     {
 
         public AddArticleViewModel()
+        {
+        }
+
+        public AddArticleViewModel(IRepository<IDictionaryItem> repository)
+            : base(repository)
         {
             Name = "AddArticle";
         }
@@ -59,5 +64,6 @@ namespace GermanDict.UI.ViewModels
             }
         }
 
+        public override WordType WordType => WordType.Article;
     }
 }

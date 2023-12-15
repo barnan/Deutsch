@@ -20,12 +20,24 @@ namespace GermanDict.Words.Parsers
             {
                 case WordType.Noun:
                     return Parse_Noun(text);
+
                 case WordType.Verb:
                     return Parse_Verb(text);
+
                 case WordType.Adjective:
                     return Parse_Adjective(text);
+
+                case WordType.Article:
+                    return Parse_Article(text);
+
+                case WordType.Attribute:
+                    return Parse_Attribute(text);
+
+                case WordType.Phrase:
+                    throw new NotImplementedException();
+
                 default:
-                    throw new ArgumentException($"Incoming text could not been parsed: {text}");
+                    throw new ArgumentException($"Received text could not been parsed: {text}");
             }
         }
 
@@ -53,12 +65,15 @@ namespace GermanDict.Words.Parsers
             {
                 case WordType.Noun:
                     return Convert_Noun(word);
+
                 case WordType.Verb:
                     return Convert_Verb(word);
+
                 case WordType.Adjective:
                     return Convert_Adjective(word);
+
                 default:
-                    throw new ArgumentException($"Incoming IWORD could not been converted: {word.WordType}");
+                    throw new ArgumentException($"Received IWORD could not been converted: {word.WordType}");
             }
         }
 

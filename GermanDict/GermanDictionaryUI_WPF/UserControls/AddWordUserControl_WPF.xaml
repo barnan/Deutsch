@@ -35,20 +35,29 @@
             <StackPanel Orientation="Vertical" >
                 <RadioButton GroupName="SelectWordType" Content="Noun" 
                              IsChecked="{Binding SelectedWordType, 
-                                                Converter={StaticResource RadioButtonWordTypeConverter}, 
-                                                ConverterParameter=Noun}"/>
+                                Converter={StaticResource RadioButtonWordTypeConverter}, 
+                                ConverterParameter=Noun}"/>
                 <RadioButton GroupName="SelectWordType" Content="Verb"
                              IsChecked="{Binding SelectedWordType, 
-                                                Converter={StaticResource RadioButtonWordTypeConverter}, 
-                                                ConverterParameter=Verb}"/>
+                                Converter={StaticResource RadioButtonWordTypeConverter}, 
+                                ConverterParameter=Verb}"/>
                 <RadioButton GroupName="SelectWordType" Content="Adjective"
                              IsChecked="{Binding SelectedWordType, 
-                                                Converter={StaticResource RadioButtonWordTypeConverter}, 
-                                                ConverterParameter=Adjective}"/>
+                                Converter={StaticResource RadioButtonWordTypeConverter}, 
+                                ConverterParameter=Adjective}"/>
+                <RadioButton GroupName="SelectWordType" Content="Article"
+                            IsChecked="{Binding SelectedWordType, 
+                                Converter={StaticResource RadioButtonWordTypeConverter}, 
+                                ConverterParameter=Article}"/>
+                <RadioButton GroupName="SelectWordType" Content="Attribute"
+                            IsChecked="{Binding SelectedWordType, 
+                                Converter={StaticResource RadioButtonWordTypeConverter}, 
+                                ConverterParameter=Attribute}"/>
 
                 <Separator Height="40"/>
 
-                <Button Content="Add" Command="{Binding AddButtonCommand}"/>
+                <Button Content="Add" Command="{Binding AddButtonCommand}"
+                        Visibility="{Binding IsAddButtonVisible}"/>
             </StackPanel>
         </GroupBox>
 

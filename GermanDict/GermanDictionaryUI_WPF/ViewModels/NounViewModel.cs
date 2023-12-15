@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GermanDict.UI.ViewModels
 {
-    public class NounViewModel : WordViewModel
+    public class NounViewModel : WordHandlerViewModel
     {
         // it is needed because of the designinstance in the xaml
         public NounViewModel()

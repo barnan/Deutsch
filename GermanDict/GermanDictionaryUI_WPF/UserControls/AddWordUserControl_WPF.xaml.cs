@@ -16,5 +16,7 @@ namespace GermanDict.UI.UserControls
             DataContext = vm;
             Name = vm.Name;
         }
+
+        
     }
 }

@@ -1,4 +1,5 @@
-﻿using GermanDict.UI.ViewModels;
+﻿using GermanDict.Interfaces;
+using GermanDict.UI.ViewModels;
 using System.Windows.Controls;
 
 namespace GermanDict.UI.UserControls
@@ -8,11 +9,11 @@ namespace GermanDict.UI.UserControls
     /// </summary>
     public partial class AddAttributeUserControl_WPF : UserControl
     {
-        public AddAttributeUserControl_WPF()
+        public AddAttributeUserControl_WPF(IRepository<IDictionaryItem> repository)
         {
             InitializeComponent();
 
-            AddAttributeViewModel vm = new AddAttributeViewModel();
+            AddAttributeViewModel vm = new AddAttributeViewModel(repository);
             DataContext = vm;
             Name = vm.Name;
         }

@@ -18,31 +18,29 @@ namespace GermanDict.UI
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
+            DataContext = new MainViewModel();
 
-            this.Title = "Dictionary " + GetRunningVersion();
+            Title = "Dictionary " + GetRunningVersion();
 
             //------------------------------------------------------------------------------------------------------------------
             // Factory part: 
             IItemParser<IDictionaryItem> wordParser = WordFactory.GetParser();
-            IRepository<IDictionaryItem> wordRepository = RepositoryFactory<IDictionaryItem>.CreateRepository(@"c:\Source\Deutsch\", "wordRepository.bin", wordParser);
+            IRepository<IDictionaryItem> wordRepository = RepositoryFactory<IDictionaryItem>.CreateRepository(@"c:\Source\", "wordRepository.bin", wordParser);
 
             UserControl[] addWordUserControls = new UserControl[] { 
                 new NounUserControl_WPF(wordRepository), 
                 new VerbUserControl_WPF(wordRepository), 
-                new AdjectiveUserControl_WPF(wordRepository) };
+                new AdjectiveUserControl_WPF(wordRepository),
+                new AddArticleUserControl_WPF(wordRepository),
+                new AddAttributeUserControl_WPF(wordRepository)};
 
             UserControl[] userControls = new UserControl[] { 
-                new SearchWordUserControl_WPF(), 
-                new AddWordUserControl_WPF(addWordUserControls),
-                new AddArticleUserControl_WPF(),
-                new AddAttributeUserControl_WPF()
-            };
+                new SearchWordUserControl_WPF(wordRepository), 
+                new AddWordUserControl_WPF(addWordUserControls)};
 
             //------------------------------------------------------------------------------------------------------------------
 
             CreateTabControlItems(tabControl1, userControls);
-
         }
 
         private SysVersion GetRunningVersion()
@@ -70,5 +68,6 @@ namespace GermanDict.UI
                 tabControl.Items.Add(tabItem);
             }
         }
+
     }
 }
