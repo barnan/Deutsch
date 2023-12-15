@@ -1,12 +1,9 @@
-﻿
-using Interfaces;
+﻿using BaseClasses;
 
 namespace GermanDict.Interfaces
 {
     public interface IRepository<T> 
     {
-        //T Get(int index);
-
         IEnumerable<T> Get(string text);
 
         IEnumerable<T> GetAllElements();
@@ -22,13 +19,23 @@ namespace GermanDict.Interfaces
         void RemoveRange(IEnumerable<T> words);
 
         event EventHandler<EventArgs<string>> RepositoryChanged;
+
+
+        RepositoryState GetState();
+
+        event EventHandler<EventArgs<RepositoryState, RepositoryState>> StateChanged;
     }
 
-    public interface IObserver<T>
+
+    public interface IDictionaryRepository : IRepository<IDictionaryItem>
     {
-        T GetState();
+        IEnumerable<IArticle> GetArticles(Language language);
 
-        event EventHandler<EventArgs<T, T>> StateChanged;
+        IEnumerable<IWordAttribute> GetAllWordAttributes();
+
+        void AddWordAttrbibute(IWordAttribute wordAttrbibute);
+
+        void AddArticle(IArticle article);
     }
-        
+
 }

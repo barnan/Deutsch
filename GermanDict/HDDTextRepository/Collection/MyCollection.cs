@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace GermanDict.HDDTextRepository.Collection
 {
-    internal class MyCollection<T> : ICollection<T>
+    public class MyCollection<T> : ICollection<T>
     {
         private ReaderWriterLockSlim _rwls = new ReaderWriterLockSlim();
         private HashSet<T> _set = new HashSet<T>();

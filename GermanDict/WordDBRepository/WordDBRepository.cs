@@ -1,5 +1,5 @@
 ﻿using GermanDict.Interfaces;
-using Interfaces;
+using BaseClasses;
 
 namespace GermanDict.WordDBRepository
 {
@@ -44,7 +44,13 @@ namespace GermanDict.WordDBRepository
             throw new NotImplementedException();
         }
 
+        public RepositoryState GetState()
+        {
+            throw new NotImplementedException();
+        }
+
         public event EventHandler<EventArgs<string>> RepositoryChanged;
+        public event EventHandler<EventArgs<RepositoryState, RepositoryState>> StateChanged;
 
         #endregion
     }

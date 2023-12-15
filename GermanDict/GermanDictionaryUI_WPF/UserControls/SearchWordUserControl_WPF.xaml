@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="GermanDict.UI.UserControls.SearchWordUserControl_WPF"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GermanDict.UI.UserControls"
+             xmlns:vm="clr-namespace:GermanDict.UI.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="500"             
+             d:DataContext="{d:DesignInstance Type=vm:SearchWordViewModel, IsDesignTimeCreatable=True}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBox Grid.Column="0" Grid.Row="0" Text="TextBox" Width="150" Height="20"/>
+
+    </Grid>
+</UserControl>

@@ -85,7 +85,7 @@ namespace GermanDict.Factories
             return new WordAttribute(name);
         }
 
-        public static IDictionaryItemParser<IDictionaryItem> GetParser()
+        public static IItemParser<IDictionaryItem> GetParser()
         {
             return new DictionaryItemParser();
         }

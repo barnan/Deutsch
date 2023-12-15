@@ -1,12 +1,12 @@
 ﻿using GermanDict.Interfaces;
 using GermanDict.HDDTextRepository.FileHandlers;
 using GermanDict.HDDTextRepository.Collection;
-using Interfaces;
 using System.Data;
+using BaseClasses;
 
 namespace GermanDict.HDDTextRepository
 {
-    public class HDDRepository<T> : IRepository<T>, Interfaces.IObserver<RepositoryState>
+    public class HDDRepository<T> : IRepository<T>
         where T : IRepositoryElement
     {
         #region consts
@@ -18,22 +18,23 @@ namespace GermanDict.HDDTextRepository
 
         #region private fields
 
-        private MyCollection<T> _set;
+        protected MyCollection<T> _set;
         private string _folderFullPath;
         private string _fileFullPath;
         private Thread _maintenanceThread;
         private CancellationTokenSource _cts;
 
-        private IDictionaryItemParser<T> _parser;
-        private IRepositoryTextFileHandler _fileHandler;
+        protected IItemParser<T> _parser;
+        protected IRepositoryTextFileHandler _fileHandler;
 
-        private object _repositoryLock;
+        protected object _repositoryLock;
         ReaderWriterLockSlim _stateLock;
-        private RepositoryState state;
 
         #endregion private fields
 
-        public HDDRepository(string externalPath, string fileName, IDictionaryItemParser<T> parser)
+        #region ctor
+
+        public HDDRepository(string externalPath, string fileName, IItemParser<T> parser)
         {
             _repositoryLock = new object();
             _stateLock = new ReaderWriterLockSlim();
@@ -71,9 +72,11 @@ namespace GermanDict.HDDTextRepository
             }
         }
 
-        #region IRepository<IWord>
+        #endregion
 
-        public void Add(T itemToAdd)
+        #region IRepository<T>
+
+        public virtual void Add(T itemToAdd)
         {
             lock (_repositoryLock)
             {
@@ -85,7 +88,7 @@ namespace GermanDict.HDDTextRepository
             }
         }
 
-        public void AddRange(IEnumerable<T> items)
+        public virtual void AddRange(IEnumerable<T> items)
         {
             lock (_repositoryLock)
             {
@@ -96,7 +99,7 @@ namespace GermanDict.HDDTextRepository
             }
         }
 
-        public IEnumerable<T> Find(Predicate<T> predicate)
+        public virtual IEnumerable<T> Find(Predicate<T> predicate)
         {
             lock (_repositoryLock)
             {
@@ -104,7 +107,7 @@ namespace GermanDict.HDDTextRepository
             }
         }
 
-        public IEnumerable<T> Get(string text)
+        public virtual IEnumerable<T> Get(string text)
         {
             lock (_repositoryLock)
             {
@@ -123,7 +126,7 @@ namespace GermanDict.HDDTextRepository
             }
         }
 
-        public IEnumerable<T> GetAllElements()
+        public virtual IEnumerable<T> GetAllElements()
         {
             lock (_repositoryLock)
             {
@@ -136,7 +139,7 @@ namespace GermanDict.HDDTextRepository
             }
         }
 
-        public void Remove(T itemToRemove)
+        public virtual void Remove(T itemToRemove)
         {
             lock (_repositoryLock)
             {
@@ -144,7 +147,7 @@ namespace GermanDict.HDDTextRepository
             }
         }
 
-        public void RemoveRange(IEnumerable<T> itemsToRemove)
+        public virtual void RemoveRange(IEnumerable<T> itemsToRemove)
         {
             lock (_repositoryLock)
             {
@@ -156,14 +159,52 @@ namespace GermanDict.HDDTextRepository
         }
 
         public event EventHandler<EventArgs<string>> RepositoryChanged;
+        RepositoryState _state;
 
-        private void OnRepositoryChanged(string text)
+        protected void OnRepositoryChanged(string text)
         {
             var textArgs = new EventArgs<string>(text);
             RepositoryChanged.InvokeAsync<EventArgs<string>>(this, textArgs);
         }
+                
+        protected virtual void SetState(RepositoryState newState)
+        {
+            _stateLock.EnterWriteLock();
+            try
+            {
+                RepositoryState oldState = _state;
+                _state = newState;
+                OnStateChanged(oldState, _state);
+            }
+            finally
+            {
+                _stateLock.ExitWriteLock();
+            }
+        }
 
-        #endregion IRepository<IWord>
+        public virtual RepositoryState GetState()
+        {
+            _stateLock.EnterReadLock();
+            try
+            {
+                return _state;
+            }
+            finally
+            {
+                _stateLock.ExitReadLock();
+            }
+        }
+
+        public event EventHandler<EventArgs<RepositoryState, RepositoryState>> StateChanged;
+
+        protected void OnStateChanged(RepositoryState oldState, RepositoryState newState)
+        {
+            var stateArgs = new EventArgs<RepositoryState, RepositoryState>(oldState, newState);
+
+            StateChanged.InvokeAsync<EventArgs<RepositoryState, RepositoryState>>(this, stateArgs);
+        }
+
+        #endregion IRepository<T>
 
         #region Maintenance
 
@@ -188,7 +229,7 @@ namespace GermanDict.HDDTextRepository
             }
         }
 
-        private void DoMaintenanceInternal()
+        protected virtual void DoMaintenanceInternal()
         {
             try
             {
@@ -208,48 +249,6 @@ namespace GermanDict.HDDTextRepository
         }
 
         #endregion Maintenance
-
-        #region IObserver<RepositoryState>
-
-        RepositoryState _state;
-
-        private void SetState(RepositoryState newState)
-        {
-            _stateLock.EnterWriteLock();
-            try
-            {
-                RepositoryState oldState = _state;
-                _state = newState;
-                OnStateChanged(oldState, _state);
-            }
-            finally
-            {
-                _stateLock.ExitWriteLock();
-            }
-        }
-
-        public RepositoryState GetState()
-        {
-            _stateLock.EnterReadLock();
-            try
-            {
-                return _state;
-            }
-            finally
-            {
-                _stateLock.ExitReadLock();
-            }
-        }
-
-        public event EventHandler<EventArgs<RepositoryState, RepositoryState>> StateChanged;        
-
-        private void OnStateChanged(RepositoryState oldState, RepositoryState newState)
-        {
-            var stateArgs = new EventArgs<RepositoryState, RepositoryState>(oldState, newState);
-
-            StateChanged.InvokeAsync<EventArgs<RepositoryState, RepositoryState>>(this, stateArgs);
-        }
-
-        #endregion
+        
     }
 }

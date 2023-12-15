@@ -8,7 +8,7 @@ namespace Factories
         where T : IRepositoryElement
     {
 
-        public static IRepository<T> CreateRepository(string externalPath, string fileName, IDictionaryItemParser<T> parser)
+        public static IRepository<T> CreateRepository(string externalPath, string fileName, IItemParser<T> parser)
         {
             //if (parser is IParser<IWord> wordParser)
             return new HDDRepository<T>(externalPath, fileName, parser);
